@@ -35,11 +35,13 @@ export function PromoCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAutoScrolling = useRef(false);
 
+  const CAROUSEL_ITEMS = [...BANNERS, BANNERS[0]]; // Add clone for seamless looping
+
   // Auto-play slideshow logic
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % BANNERS.length);
-    }, 5000); // Change slide every 5 seconds
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, []);
@@ -57,6 +59,14 @@ export function PromoCarousel() {
       // Allow scroll to finish before accepting manual scroll events again
       const t = setTimeout(() => {
         isAutoScrolling.current = false;
+        
+        // If we reached the cloned first slide, instantly jump back to the real first slide
+        if (currentIndex === BANNERS.length) {
+          if (containerRef.current) {
+            containerRef.current.scrollTo({ left: 0, behavior: 'auto' });
+          }
+          setCurrentIndex(0);
+        }
       }, 600);
       return () => clearTimeout(t);
     }
@@ -69,12 +79,16 @@ export function PromoCarousel() {
     if (containerRef.current) {
       const scrollLeft = containerRef.current.scrollLeft;
       const scrollWidth = containerRef.current.clientWidth;
-      const newIndex = Math.round(scrollLeft / scrollWidth);
-      if (newIndex !== currentIndex) {
-        setCurrentIndex(newIndex);
+      if (scrollWidth > 0) {
+        const newIndex = Math.round(scrollLeft / scrollWidth);
+        if (newIndex !== currentIndex) {
+          setCurrentIndex(newIndex);
+        }
       }
     }
   };
+
+  const activeDot = currentIndex % BANNERS.length;
 
   return (
     <section className="border-b border-paper-edge bg-paper-deep pt-3 pb-3 md:pt-6 md:pb-6 overflow-hidden w-full">
@@ -82,13 +96,13 @@ export function PromoCarousel() {
         <div 
           ref={containerRef}
           onScroll={handleScroll}
-          className="flex w-full snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm scroll-smooth"
+          className="flex w-full snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <style dangerouslySetInnerHTML={{ __html: `
             .flex.snap-x::-webkit-scrollbar { display: none; }
           `}} />
-          {BANNERS.map((banner, i) => (
+          {CAROUSEL_ITEMS.map((banner, i) => (
             <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
               <picture>
                 <source media="(max-width: 767px)" srcSet={banner.mobileSrc} />
@@ -114,7 +128,7 @@ export function PromoCarousel() {
             >
               <div 
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  idx === currentIndex ? 'w-6 bg-green' : 'w-2 bg-paper-edge'
+                  idx === activeDot ? 'w-6 bg-green' : 'w-2 bg-paper-edge'
                 }`}
               />
             </button>
