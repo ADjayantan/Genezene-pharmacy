@@ -150,38 +150,38 @@ export default async function Home() {
           response, so Googlebot indexes them without running JavaScript.
           No gradient: warm paper carries it. */}
       <section className="border-b border-paper-edge">
-        <div className="container-x grid items-start gap-14 py-18 md:grid-cols-[3fr_2fr]">
-          <div>
-            <RuleLabel>CDSCO Licensed · Established {site.founded}</RuleLabel>
-            <h1 className="mt-3 text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.035em]">
+        <div className="container-x grid items-start gap-10 md:gap-14 py-10 md:py-18 md:grid-cols-[3fr_2fr]">
+          <div className="text-center md:text-left">
+            <RuleLabel className="mx-auto md:mx-0">CDSCO Licensed · Established {site.founded}</RuleLabel>
+            <h1 className="mt-4 text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] tracking-[-0.035em]">
               Medicines, <em className="font-normal italic">dispensed</em>
-              <br />by people who know you.
+              <br className="hidden sm:block" />by people who know you.
             </h1>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Medicines 18% OFF</span>
-              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Surgical Items 25% OFF</span>
-              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Adult Diapers 40% OFF</span>
+            <div className="mt-6 flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
+              <span className="rounded-[3px] bg-green px-2 py-1 md:px-3 text-[0.75rem] md:text-[0.8rem] font-bold text-green-on">Medicines 18% OFF</span>
+              <span className="rounded-[3px] bg-green px-2 py-1 md:px-3 text-[0.75rem] md:text-[0.8rem] font-bold text-green-on">Surgicals 25% OFF</span>
             </div>
             
-            <p className="mt-5 max-w-[40ch] text-[1.1rem] leading-relaxed text-ink-soft">
+            <p className="mt-5 mx-auto md:mx-0 max-w-[40ch] text-[1rem] md:text-[1.1rem] leading-relaxed text-ink-soft">
               We offer doorstep delivery (within a 10km radius of Ganapathy). 
               If you can't find the medicines you need, just send us your Doctor's prescription 🗒️
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/products">Browse the counter</ButtonLink>
-              <ButtonLink href="/upload-prescription" tone="outline">Upload a prescription</ButtonLink>
+            <div className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center md:justify-start gap-3">
+              <ButtonLink href="/products" className="w-full sm:w-auto text-center justify-center">Browse the counter</ButtonLink>
+              <ButtonLink href="/upload-prescription" tone="outline" className="w-full sm:w-auto text-center justify-center">Upload a prescription</ButtonLink>
             </div>
 
-            <div className="mono mt-9 flex flex-wrap gap-x-5 gap-y-1 border-t border-paper-edge pt-4 text-[0.68rem] uppercase tracking-[0.08em] text-ink-soft">
+            <div className="mono mt-9 flex flex-wrap justify-center md:justify-start gap-x-3 md:gap-x-5 gap-y-2 border-t border-paper-edge pt-5 text-[0.65rem] md:text-[0.68rem] uppercase tracking-[0.08em] text-ink-soft">
               <span>Pharmacist verified</span>
-              <span className="border-l border-paper-edge pl-5">Same-day dispatch</span>
-              <span className="border-l border-paper-edge pl-5">Ganapathy & 10km radius</span>
+              <span className="hidden md:inline border-l border-paper-edge pl-5">Same-day dispatch</span>
+              <span className="md:hidden text-ink-soft/40">•</span>
+              <span>Same-day dispatch</span>
             </div>
           </div>
 
           {/* Lead capture above the fold — this is the conversion engine. */}
-          <Panel accent="amber">
+          <Panel accent="amber" className="mx-auto w-full max-w-md md:max-w-none">
             <RuleLabel className="border-t-0 pt-0">Call me back</RuleLabel>
             <h2 className="font-display mt-1.5 text-[1.3rem]">Tell us what you need.</h2>
             <p className="mb-5 mt-1 text-[0.87rem] text-ink-soft">

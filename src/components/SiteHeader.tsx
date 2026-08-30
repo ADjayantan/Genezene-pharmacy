@@ -24,17 +24,16 @@ export function SiteHeader() {
   return (
     <>
       <div className="bg-green-deep py-2 text-green-on">
-        <div className="container-x mono flex flex-wrap justify-center gap-x-5 gap-y-1 text-center text-[0.7rem] uppercase tracking-[0.06em]">
+        <div className="container-x mono flex flex-wrap justify-center items-center gap-2 md:gap-x-5 gap-y-1 text-center text-[0.65rem] sm:text-[0.7rem] uppercase tracking-[0.06em]">
           <span>Medicines 18% OFF</span>
-          <span className="border-l border-green-on/25 pl-5">
-            Surgical Items 25% OFF
-          </span>
-          <span className="border-l border-green-on/25 pl-5">
-            Adult Diapers 40% OFF
-          </span>
-          <span className="hidden border-l border-green-on/25 pl-5 md:inline">
-            Doorstep Delivery within 10km of Ganapathy
-          </span>
+          <span className="hidden md:block border-l border-green-on/25 h-3"></span>
+          <span className="md:hidden text-green-on/50">•</span>
+          <span>Surgicals 25% OFF</span>
+          <span className="hidden md:block border-l border-green-on/25 h-3"></span>
+          <span className="md:hidden text-green-on/50">•</span>
+          <span>Diapers 40% OFF</span>
+          <span className="hidden md:block border-l border-green-on/25 h-3"></span>
+          <span className="hidden sm:block">Delivery in 10km</span>
         </div>
       </div>
 
