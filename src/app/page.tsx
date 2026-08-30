@@ -119,6 +119,33 @@ export default async function Home() {
           measurably lifts click-through rate. */}
       <JsonLd data={faqSchema(FAQS)} />
 
+      {/* PROMO BANNERS CAROUSEL */}
+      <section className="border-b border-paper-edge bg-paper-deep pt-6 pb-6">
+        <div className="container-x">
+          <div 
+            className="flex snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm scroll-smooth"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style dangerouslySetInnerHTML={{ __html: `
+              .flex.snap-x::-webkit-scrollbar { display: none; }
+            `}} />
+            {[
+              { src: '/banners/banner-welcome.png', alt: 'Welcome to Genezenz Pharmacy - Up to 20% off', href: '/products' },
+              { src: '/banners/banner-sale.png', alt: 'Mega Health Sale - Flat 30% Off', href: '/products' },
+              { src: '/banners/banner-skin.png', alt: 'Radiant Skin, Healthy Glow', href: '/products?cat=personal-care' },
+              { src: '/banners/banner-active.png', alt: 'Stay Active & Well', href: '/products?cat=pain-relief' },
+            ].map((banner, i) => (
+              <Link key={i} href={banner.href} className="min-w-full snap-start shrink-0 block">
+                <img src={banner.src} alt={banner.alt} className="w-full h-auto object-cover" />
+              </Link>
+            ))}
+          </div>
+          <div className="mt-3 flex justify-center text-[0.75rem] font-medium text-ink-soft uppercase tracking-wider">
+            <span>← Swipe for more offers →</span>
+          </div>
+        </div>
+      </section>
+
       {/* HERO — server-rendered. The h1 and copy are in the first HTML
           response, so Googlebot indexes them without running JavaScript.
           No gradient: warm paper carries it. */}
