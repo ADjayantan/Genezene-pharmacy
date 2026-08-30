@@ -130,13 +130,17 @@ export default async function Home() {
               .flex.snap-x::-webkit-scrollbar { display: none; }
             `}} />
             {[
-              { src: '/banners/banner-welcome.png', alt: 'Welcome to Genezenz Pharmacy - Up to 20% off', href: '/products' },
-              { src: '/banners/banner-sale.png', alt: 'Mega Health Sale - Flat 30% Off', href: '/products' },
-              { src: '/banners/banner-skin.png', alt: 'Radiant Skin, Healthy Glow', href: '/products?cat=personal-care' },
-              { src: '/banners/banner-active.png', alt: 'Stay Active & Well', href: '/products?cat=pain-relief' },
+              { src: '/banners/banner-welcome.png', mobileSrc: '/banners/mobile-banner-welcome.png', alt: 'Welcome to Genezenz Pharmacy - Up to 20% off', href: '/products' },
+              { src: '/banners/banner-sale.png', mobileSrc: '/banners/banner-sale.png', alt: 'Mega Health Sale - Flat 30% Off', href: '/products' },
+              { src: '/banners/banner-skin.png', mobileSrc: '/banners/mobile-banner-skin.png', alt: 'Radiant Skin, Healthy Glow', href: '/products?cat=personal-care' },
+              { src: '/banners/banner-active.png', mobileSrc: '/banners/mobile-banner-active.png', alt: 'Stay Active & Well', href: '/products?cat=pain-relief' },
             ].map((banner, i) => (
               <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
-                <img src={banner.src} alt={banner.alt} className="w-full aspect-[10/4] sm:aspect-[21/6] md:aspect-[1205/320] object-cover rounded-md" />
+                <picture>
+                  <source media="(max-width: 767px)" srcSet={banner.mobileSrc} />
+                  <source media="(min-width: 768px)" srcSet={banner.src} />
+                  <img src={banner.src} alt={banner.alt} className="w-full aspect-[10/4] sm:aspect-[21/6] md:aspect-[1205/320] object-cover rounded-md" />
+                </picture>
               </Link>
             ))}
           </div>
