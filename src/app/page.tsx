@@ -139,7 +139,7 @@ export default async function Home() {
                 <picture>
                   <source media="(max-width: 767px)" srcSet={banner.mobileSrc} />
                   <source media="(min-width: 768px)" srcSet={banner.src} />
-                  <img src={banner.src} alt={banner.alt} className="w-full aspect-[10/4] sm:aspect-[21/6] md:aspect-[1205/320] object-cover rounded-md" />
+                  <img src={banner.src} alt={banner.alt} className="w-full aspect-[1205/320] object-cover rounded-md" />
                 </picture>
               </Link>
             ))}
