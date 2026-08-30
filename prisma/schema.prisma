@@ -1,0 +1,276 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  address   String?
+  role      Role     @default(CUSTOMER)
+  orders    Order[]
+  prescriptions Prescription[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  slug     String    @unique
+  products Product[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique          // SEO-friendly URL
+  description String
+  // Long-form copy for the product page. Google rewards unique, substantial
+  // content — thin pages are the #1 reason pharmacy sites don't rank.
+  content     String?
+  price       Decimal  @db.Decimal(10, 2)
+  mrp         Decimal? @db.Decimal(10, 2)
+
+  // What WE paid. Nullable on purpose: profit is only reported for products
+  // where a real cost has been entered. Estimating it would produce a margin
+  // figure the client would then plan around — worse than showing nothing.
+  costPrice   Decimal? @db.Decimal(10, 2)
+
+  stock       Int      @default(0)
+  reorderLevel Int     @default(10)   // drives the low-stock alert
+
+  // Batch + expiry. A pharmacy may not sell expired stock, so these drive the
+  // near-expiry dashboard alert. Nullable: legacy rows and non-drug items
+  // (e.g. a thermometer) need not carry an expiry.
+  batchNo    String?
+  expiryDate DateTime?
+
+  // GST rate for this line, as a percentage (India: most medicines 5 or 12,
+  // wellness/OTC often 18). Prices are stored GST-inclusive (Indian MRP is),
+  // so the invoice back-computes the tax from this rate. Null → treated as 5.
+  gstRate    Decimal? @db.Decimal(4, 2)
+
+  imageUrl    String?                 // primary image (first of `images`)
+  images      String[] @default([])   // gallery — add, reorder, remove
+  brand       String?
+  saltName    String?                    // generic/composition — huge for search
+  // Free-text keywords. Migrated from the old catalogue and used as the
+  // strongest signal in content-based product similarity.
+  tags        String[] @default([])
+  rxRequired  Boolean  @default(false)
+  published   Boolean  @default(true)
+
+  // Per-page SEO overrides
+  metaTitle       String?
+  metaDescription String?
+
+  categoryId String?
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published, categoryId])
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  orderNo   String      @unique
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  total     Decimal     @db.Decimal(10, 2)
+  status    OrderStatus @default(PENDING)
+  address   String
+  phone     String
+  name      String
+  pincode   String?
+  notes     String?
+  paymentMethod String  @default("COD")
+
+  // Delivery tracking
+  courier       String?
+  trackingId    String?
+  trackingUrl   String?
+  expectedAt    DateTime?
+  deliveredAt   DateTime?
+
+  // Snapshot of margin at the time of sale. Cost prices change; a report run
+  // next year must still show what this order actually earned.
+  costTotal     Decimal? @db.Decimal(10, 2)
+
+  events    OrderEvent[]
+  prescriptions Prescription[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([userId, status])
+  @@index([createdAt])
+  @@index([status, createdAt])
+}
+
+/// Append-only status history. Powers the tracking timeline the customer sees
+/// and gives the shop an audit trail of who changed what, and when.
+model OrderEvent {
+  id      String   @id @default(cuid())
+  orderId String
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  status  OrderStatus
+  note    String?
+  actor   String?        // admin email, or null when the system did it
+  at      DateTime @default(now())
+
+  @@index([orderId, at])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String  // snapshot: orders must stay readable if the product changes
+  qty       Int
+  price     Decimal  @db.Decimal(10, 2)
+  costPrice Decimal? @db.Decimal(10, 2)  // snapshot for historical margin
+  gstRate   Decimal? @db.Decimal(4, 2)   // snapshot: GST % at time of sale, for the invoice
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Prescription {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Storage key, NOT a public URL. Files are served only through
+  // /api/prescriptions/file/[id], which checks ownership first.
+  storageKey String
+  mimeType   String
+  sizeBytes  Int
+  originalName String?
+
+  patientName String?
+  doctorName  String?
+  notes       String?
+
+  status     RxStatus @default(PENDING)
+  reviewNote String?
+  reviewedAt DateTime?
+  reviewedBy String?      // pharmacist's email — who signed this off
+
+  // The order this prescription was dispensed against, once one exists.
+  orderId    String?
+  order      Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  events     RxEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId])
+}
+
+/// Prescription audit trail. For a licensed pharmacy this is not a nice-to-have:
+/// a record of who reviewed a prescription and when is exactly what a drug
+/// inspector asks for.
+model RxEvent {
+  id             String   @id @default(cuid())
+  prescriptionId String
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+
+  status RxStatus
+  note   String?
+  actor  String?
+  at     DateTime @default(now())
+
+  @@index([prescriptionId, at])
+}
+
+enum RxStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+/* ─────────────────────────────────────────────────────
+   LEADS — the unified inbox the client asked for.
+   Every channel (Meta Lead Ads from Facebook & Instagram,
+   WhatsApp, the website contact form) writes into this one
+   table, so the admin sees a single stream.
+   ───────────────────────────────────────────────────── */
+model Lead {
+  id     String     @id @default(cuid())
+  source LeadSource
+  status LeadStatus @default(NEW)
+
+  name    String?
+  email   String?
+  phone   String?
+  message String?
+
+  // Raw field_data from Meta, or form payload. Keeps everything
+  // even when the ad form has custom questions we didn't model.
+  raw Json?
+
+  // Meta-specific — used to dedupe webhook retries.
+  externalId String? @unique   // leadgen_id
+  formId     String?
+  formName   String?
+  pageId     String?
+  campaignId String?
+  adId       String?
+
+  assignedTo String?
+  note       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([source, createdAt])
+}
+
+enum LeadSource {
+  FACEBOOK
+  INSTAGRAM
+  WHATSAPP
+  WEBSITE
+  PHONE
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  LOST
+}

@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+# Every env file is secret — EXCEPT the committed template. This ordering
+# matters: ignore all .env*, then re-include the example.
+.env*
+!.env.example
+*.log
+.DS_Store
+next-env.d.ts
+private-uploads/
+.vercel

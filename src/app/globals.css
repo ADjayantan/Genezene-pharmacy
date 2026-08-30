@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   APOTHECARY EDITORIAL
+   Warm paper, deep ink, one amber accent.
+
+   Semantic values live on :root so they can swap for dark mode.
+   `@theme inline` maps Tailwind's colour utilities onto those
+   variables by reference — without `inline`, Tailwind would bake
+   the light values into the class output and dark mode would
+   silently do nothing.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --paper:       #FAF7F2;   /* page — warm off-white, never #FFF */
+  --paper-deep:  #F2ECE3;   /* cards, tinted bands */
+  --paper-edge:  #E6DDD0;   /* hairline rules */
+  --ink:         #1A2E28;   /* text — deep green-black, never #000 */
+  --ink-soft:    #5C6B65;
+  --green:       #1F4A3D;   /* primary action */
+  --green-deep:  #163329;
+  --green-wash:  #E8F0EC;
+  --green-on:    #FAF7F2;   /* text on a green fill */
+  --amber:       #C2703D;   /* the single warm accent */
+  --amber-wash:  #FAEDE3;
+  --plum:        #7B3F5E;   /* PRESCRIPTION ONLY — never decorative */
+  --plum-wash:   #F5E9EF;
+  --in:          #2D6A4F;
+  --low:         #B4690E;
+  --out:         #A33A32;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #14201C;
+    --paper-deep: #1C2B26;
+    --paper-edge: #2A3B35;
+    --ink:        #EDE7DD;
+    --ink-soft:   #9DAAA4;
+    --green:      #6BAF95;
+    --green-deep: #8FC7B0;
+    --green-wash: #1B322B;
+    --green-on:   #0E1C17;
+    --amber:      #E0965E;
+    --amber-wash: #2E2018;
+    --plum:       #C88BA6;
+    --plum-wash:  #2B1C24;
+    --in:         #6BAF95;
+    --low:        #D9A05B;
+    --out:        #D98A82;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:#14201C; --paper-deep:#1C2B26; --paper-edge:#2A3B35;
+  --ink:#EDE7DD; --ink-soft:#9DAAA4;
+  --green:#6BAF95; --green-deep:#8FC7B0; --green-wash:#1B322B; --green-on:#0E1C17;
+  --amber:#E0965E; --amber-wash:#2E2018;
+  --plum:#C88BA6; --plum-wash:#2B1C24;
+  --in:#6BAF95; --low:#D9A05B; --out:#D98A82;
+}
+
+@theme inline {
+  --color-paper:      var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-edge: var(--paper-edge);
+  --color-ink:        var(--ink);
+  --color-ink-soft:   var(--ink-soft);
+  --color-green:      var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-wash: var(--green-wash);
+  --color-green-on:   var(--green-on);
+  --color-amber:      var(--amber);
+  --color-amber-wash: var(--amber-wash);
+  --color-plum:       var(--plum);
+  --color-plum-wash:  var(--plum-wash);
+  --color-in:         var(--in);
+  --color-low:        var(--low);
+  --color-out:        var(--out);
+
+  /* Set by next/font in layout.tsx — self-hosted, so no external
+     request and no layout shift. */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans:    var(--font-karla), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Editorial, not app: near-square corners. */
+  --radius-ctl:  3px;
+  --radius-card: 4px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  /* 17px base, not the usual 16. A neighbourhood pharmacy serves a lot of
+     older customers, and the single most effective accessibility change for
+     that audience is simply larger body text. */
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fraunces is variable — dial the softness down and let optical
+   sizing do its job at display sizes. */
+:where(h1, h2, h3, .font-display) {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 0, 'WONK' 0;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+/* Anything a pharmacist would read off a label is monospaced,
+   and every numeral is tabular so columns line up. */
+:where(.mono, code, kbd, samp) {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.container-x { width: 100%; max-width: 1140px; margin-inline: auto; padding-inline: 1.5rem; }
+
+/* Focus must be visible on every control — WCAG, and it is the
+   first thing a keyboard user notices. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Minimum 44px touch targets on controls that sit close together. Below
+   that, mis-taps rise sharply — and rise fastest among exactly the customers
+   this shop serves most. */
+@media (pointer: coarse) {
+  :where(button, a, select, summary, input[type="checkbox"]) { min-height: 44px; }
+  :where(.mono, small) { font-size: max(0.78rem, 13px); }
+}
+
+/* Native disclosure, styled with a serif +/− instead of the
+   default triangle. */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: '+';
+  font-family: var(--font-display);
+  color: var(--green);
+  display: inline-block;
+  width: 1.4rem;
+}
+details[open] > summary::before { content: '–'; }
+
+
+/* ─────────────────────────────────────────────────────────────
+   ADMIN SKIN
+
+   The storefront is warm paper and editorial serif because it is
+   selling to a person. The back office is not selling anything —
+   it is a tool someone uses at speed, often while a customer waits
+   on the phone. Dressing it in the same clothes made it read as a
+   marketing page.
+
+   So the surface temperature flips: cool slate instead of warm
+   paper, neutral ink instead of green-black, sans headings instead
+   of Fraunces, tighter rhythm. The green accent stays, so it is
+   still recognisably the same shop.
+
+   Scoped to .admin-scope — none of this reaches the storefront.
+   ───────────────────────────────────────────────────────────── */
+.admin-scope {
+  --paper:      #F4F5F6;   /* cool grey, not warm paper */
+  --paper-deep: #EAECEE;
+  --paper-edge: #D6DADE;
+  --ink:        #171B1F;   /* neutral near-black */
+  --ink-soft:   #5A6570;
+  --green-wash: #E4EDE9;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .admin-scope {
+    --paper:      #12161A;
+    --paper-deep: #1A1F25;
+    --paper-edge: #2B3239;
+    --ink:        #E4E8EC;
+    --ink-soft:   #8D99A5;
+    --green-wash: #172A24;
+  }
+}
+:root[data-theme="dark"] .admin-scope {
+  --paper:#12161A; --paper-deep:#1A1F25; --paper-edge:#2B3239;
+  --ink:#E4E8EC; --ink-soft:#8D99A5; --green-wash:#172A24;
+}
+
+/* Tools do not need an editorial serif. Headings drop to the sans at a
+   tighter tracking — it reads as a label, not a title. */
+.admin-scope :where(h1, h2, h3) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+/* Denser than the storefront. Someone clearing a queue wants rows on
+   screen, not breathing room. */
+.admin-scope { font-size: 15px; }
+.admin-scope table :where(td, th) { padding-block: 0.6rem; }
