@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useOptimistic } from 'react';
 import { reviewPrescription } from '@/app/admin/prescriptions/actions';
 import { Button, Field, inputClass, Spinner } from '@/components/ui';
 import type { RxStatus } from '@prisma/client';
@@ -11,7 +11,12 @@ export function RxReview({
   const [text, setText] = useState(note ?? '');
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
-  const [actionType, setActionType] = useState<RxStatus | null>(null);
+
+  // Optimistic UI makes it feel instant (zero-latency) to the user
+  const [optStatus, setOptStatus] = useOptimistic<RxStatus, RxStatus>(
+    status,
+    (_, newStatus) => newStatus
+  );
 
   function act(next: RxStatus) {
     if (next === 'REJECTED' && !text.trim()) {
@@ -19,11 +24,10 @@ export function RxReview({
       return;
     }
     setMsg(null);
-    setActionType(next);
     start(async () => {
+      setOptStatus(next); // This updates the UI instantly before the DB saves
       await reviewPrescription(id, next, text.trim() || undefined);
       setMsg(next === 'APPROVED' ? 'Approved' : 'Rejected');
-      setActionType(null);
     });
   }
 
@@ -36,6 +40,7 @@ export function RxReview({
           rows={2}
           maxLength={500}
           className={inputClass}
+          disabled={optStatus !== 'PENDING' && !pending}
           placeholder="e.g. Verified — all three medicines in stock. Or: the prescription is not dated, please re-upload."
         />
       </Field>
@@ -44,19 +49,19 @@ export function RxReview({
         <Button
           size="sm"
           onClick={() => act('APPROVED')}
-          disabled={pending || status === 'APPROVED'}
+          disabled={pending || optStatus === 'APPROVED'}
           className="border-transparent bg-in text-green-on hover:opacity-90 disabled:opacity-80 disabled:bg-in/80"
         >
-          {pending && actionType === 'APPROVED' ? <Spinner className="h-4 w-4" /> : null}
+          {pending && optStatus === 'APPROVED' ? <Spinner className="h-4 w-4" /> : null}
           Approve
         </Button>
         <Button 
           size="sm" 
           tone="danger" 
           onClick={() => act('REJECTED')} 
-          disabled={pending || status === 'REJECTED'}
+          disabled={pending || optStatus === 'REJECTED'}
         >
-          {pending && actionType === 'REJECTED' ? <Spinner className="h-4 w-4" /> : null}
+          {pending && optStatus === 'REJECTED' ? <Spinner className="h-4 w-4" /> : null}
           Reject
         </Button>
         {msg && <span role="status" className="text-[0.85rem] text-ink-soft">{msg}</span>}
