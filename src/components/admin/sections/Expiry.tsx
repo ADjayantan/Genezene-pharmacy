@@ -63,31 +63,64 @@ export async function ExpirySection() {
               <p className="mono border-b border-out/30 px-4 py-2.5 text-[0.7rem] uppercase tracking-[0.08em] text-out">
                 Expired — pull from the shelf now
               </p>
-              <table className="w-full min-w-[560px] text-[0.85rem]">
-                <tbody>{expired.map((r) => <Row key={r.id} r={r} tone="expired" />)}</tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[560px] text-[0.85rem]">
+                  <thead className="bg-out/10">
+                    <tr className="text-left mono text-[0.66rem] uppercase tracking-wider text-out/70">
+                      <th className="px-4 py-2 font-normal">Product</th>
+                      <th className="px-4 py-2 font-normal">Batch</th>
+                      <th className="px-4 py-2 font-normal">Expiry</th>
+                      <th className="px-4 py-2 font-normal">Stock</th>
+                      <th className="px-4 py-2 font-normal">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>{expired.map((r) => <Row key={r.id} r={r} tone="expired" />)}</tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {soon.length > 0 && (
-            <div className="overflow-x-auto rounded-[4px] border border-paper-edge">
+            <div className="rounded-[4px] border border-paper-edge overflow-hidden">
               <p className="mono border-b border-paper-edge bg-amber-wash px-4 py-2.5 text-[0.7rem] uppercase tracking-[0.08em] text-ink">
                 Within 30 days — sell first or return to distributor
               </p>
-              <table className="w-full min-w-[560px] text-[0.85rem]">
-                <tbody>{soon.map((r) => <Row key={r.id} r={r} tone="soon" />)}</tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[560px] text-[0.85rem]">
+                  <thead className="bg-paper-deep">
+                    <tr className="border-b border-paper-edge text-left mono text-[0.66rem] uppercase tracking-wider text-ink-soft">
+                      <th className="px-4 py-2 font-normal">Product</th>
+                      <th className="px-4 py-2 font-normal">Batch</th>
+                      <th className="px-4 py-2 font-normal">Expiry</th>
+                      <th className="px-4 py-2 font-normal">Stock</th>
+                      <th className="px-4 py-2 font-normal">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>{soon.map((r) => <Row key={r.id} r={r} tone="soon" />)}</tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {window.length > 0 && (
-            <div className="overflow-x-auto rounded-[4px] border border-paper-edge">
+            <div className="rounded-[4px] border border-paper-edge overflow-hidden">
               <p className="mono border-b border-paper-edge px-4 py-2.5 text-[0.7rem] uppercase tracking-[0.08em] text-ink-soft">
                 31–60 days
               </p>
-              <table className="w-full min-w-[560px] text-[0.85rem]">
-                <tbody>{window.map((r) => <Row key={r.id} r={r} tone="window" />)}</tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[560px] text-[0.85rem]">
+                  <thead className="bg-paper-deep">
+                    <tr className="border-b border-paper-edge text-left mono text-[0.66rem] uppercase tracking-wider text-ink-soft">
+                      <th className="px-4 py-2 font-normal">Product</th>
+                      <th className="px-4 py-2 font-normal">Batch</th>
+                      <th className="px-4 py-2 font-normal">Expiry</th>
+                      <th className="px-4 py-2 font-normal">Stock</th>
+                      <th className="px-4 py-2 font-normal">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>{window.map((r) => <Row key={r.id} r={r} tone="window" />)}</tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
