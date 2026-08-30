@@ -51,6 +51,9 @@ export function PromoCarousel() {
     if (containerRef.current) {
       isAutoScrolling.current = true;
       const scrollWidth = containerRef.current.clientWidth;
+      
+      // Force smooth scrolling for the animation (fixes iOS Safari)
+      containerRef.current.style.scrollBehavior = 'smooth';
       containerRef.current.scrollTo({
         left: scrollWidth * currentIndex,
         behavior: 'smooth'
@@ -63,6 +66,8 @@ export function PromoCarousel() {
         // If we reached the cloned first slide, instantly jump back to the real first slide
         if (currentIndex === BANNERS.length) {
           if (containerRef.current) {
+            // Disable smooth scrolling just for the jump
+            containerRef.current.style.scrollBehavior = 'auto';
             containerRef.current.scrollTo({ left: 0, behavior: 'auto' });
           }
           setCurrentIndex(0);
