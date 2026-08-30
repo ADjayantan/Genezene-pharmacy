@@ -104,19 +104,18 @@ export function SearchBox() {
         <ul
           id="search-results"
           role="listbox"
-          className="absolute inset-x-0 top-full z-50 mt-1.5 max-h-[26rem] overflow-y-auto rounded-[4px] border border-paper-edge bg-paper py-1"
+          className="absolute inset-x-0 top-full z-50 mt-1.5 max-h-[26rem] overflow-y-auto rounded-[4px] border border-paper-edge bg-paper py-1 shadow-xl shadow-ink/10"
         >
           {res.matches.map((h, i) => row(h, i))}
 
           {res.related.length > 0 && (
             <>
-              {/* Labelled, so a related suggestion is never mistaken for a
-                  direct match — on a medicine list that distinction matters. */}
               <li
                 aria-hidden="true"
-                className="mono mt-1 border-t border-paper-edge px-4 pb-1 pt-2 text-[0.6rem] uppercase tracking-[0.12em] text-ink-soft"
+                className="mt-2 border-y border-paper-edge bg-paper-deep px-4 py-2 text-[0.75rem] font-semibold tracking-wider text-ink-soft flex items-center gap-2 uppercase"
               >
-                Related
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Related Suggestions
               </li>
               {res.related.map((h, i) => row(h, res.matches.length + i))}
             </>

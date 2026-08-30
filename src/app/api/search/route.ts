@@ -58,6 +58,15 @@ export async function GET(req: Request) {
         id: s.id, name: s.name, slug: s.slug, price: s.price,
         brand: s.brand, stock: s.stock, rxRequired: s.rxRequired,
       }));
+  } else {
+    // Fallback: If no direct matches, show popular products as related suggestions
+    const popular = await db.product.findMany({
+      where: { published: true, stock: { gt: 0 } },
+      select,
+      take: 3,
+      orderBy: { stock: 'desc' },
+    });
+    related = popular.map((p) => ({ ...p, price: Number(p.price) }));
   }
 
   return NextResponse.json(
