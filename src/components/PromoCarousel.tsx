@@ -94,16 +94,20 @@ export function PromoCarousel() {
         </div>
         
         {/* Pagination Dots */}
-        <div className="mt-3 md:mt-4 flex justify-center gap-2">
+        <div className="mt-2 md:mt-4 flex justify-center items-center gap-1">
           {BANNERS.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'w-6 bg-green' : 'w-2 bg-paper-edge hover:bg-green/50'
-              }`}
+              className="p-2 flex items-center justify-center outline-none focus:outline-none"
               aria-label={`Go to slide ${idx + 1}`}
-            />
+            >
+              <div 
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  idx === currentIndex ? 'w-6 bg-green' : 'w-2 bg-paper-edge'
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
