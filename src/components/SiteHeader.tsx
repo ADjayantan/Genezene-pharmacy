@@ -23,7 +23,7 @@ const NAV = [
 export function SiteHeader() {
   return (
     <>
-      <div className="bg-paper-deep py-2 text-ink">
+      <div className="bg-paper border-b border-paper-edge py-2 text-ink">
         <div className="container-x mono flex flex-wrap justify-center gap-x-5 gap-y-1 text-center text-[0.7rem] font-medium uppercase tracking-[0.06em]">
           <span>Medicines 18% OFF</span>
           <span className="border-l border-ink/20 pl-5">
