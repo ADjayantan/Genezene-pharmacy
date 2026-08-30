@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { reviewPrescription } from '@/app/admin/prescriptions/actions';
-import { Button, Field, inputClass } from '@/components/ui';
+import { Button, Field, inputClass, Spinner } from '@/components/ui';
 import type { RxStatus } from '@prisma/client';
 
 export function RxReview({
@@ -11,18 +11,19 @@ export function RxReview({
   const [text, setText] = useState(note ?? '');
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
+  const [actionType, setActionType] = useState<RxStatus | null>(null);
 
   function act(next: RxStatus) {
-    // A bare rejection leaves a patient with no idea what to fix, and they
-    // will simply ring the shop — which wastes everyone's time.
     if (next === 'REJECTED' && !text.trim()) {
       setMsg('Please add a note explaining why, so the customer knows what to fix.');
       return;
     }
     setMsg(null);
+    setActionType(next);
     start(async () => {
       await reviewPrescription(id, next, text.trim() || undefined);
       setMsg(next === 'APPROVED' ? 'Approved' : 'Rejected');
+      setActionType(null);
     });
   }
 
@@ -44,11 +45,18 @@ export function RxReview({
           size="sm"
           onClick={() => act('APPROVED')}
           disabled={pending || status === 'APPROVED'}
-          className="border-transparent bg-in text-green-on hover:opacity-90"
+          className="border-transparent bg-in text-green-on hover:opacity-90 disabled:opacity-80 disabled:bg-in/80"
         >
+          {pending && actionType === 'APPROVED' ? <Spinner className="h-4 w-4" /> : null}
           Approve
         </Button>
-        <Button size="sm" tone="danger" onClick={() => act('REJECTED')} disabled={pending || status === 'REJECTED'}>
+        <Button 
+          size="sm" 
+          tone="danger" 
+          onClick={() => act('REJECTED')} 
+          disabled={pending || status === 'REJECTED'}
+        >
+          {pending && actionType === 'REJECTED' ? <Spinner className="h-4 w-4" /> : null}
           Reject
         </Button>
         {msg && <span role="status" className="text-[0.85rem] text-ink-soft">{msg}</span>}
