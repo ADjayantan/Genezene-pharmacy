@@ -120,10 +120,10 @@ export default async function Home() {
       <JsonLd data={faqSchema(FAQS)} />
 
       {/* PROMO BANNERS CAROUSEL */}
-      <section className="border-b border-paper-edge bg-paper-deep pt-6 pb-6">
-        <div className="container-x">
+      <section className="border-b border-paper-edge bg-paper-deep pt-6 pb-6 overflow-hidden w-full">
+        <div className="container-x relative w-full max-w-full">
           <div 
-            className="flex snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm scroll-smooth"
+            className="flex w-full snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm scroll-smooth"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <style dangerouslySetInnerHTML={{ __html: `
@@ -135,7 +135,7 @@ export default async function Home() {
               { src: '/banners/banner-skin.png', alt: 'Radiant Skin, Healthy Glow', href: '/products?cat=personal-care' },
               { src: '/banners/banner-active.png', alt: 'Stay Active & Well', href: '/products?cat=pain-relief' },
             ].map((banner, i) => (
-              <Link key={i} href={banner.href} className="min-w-full snap-start shrink-0 block">
+              <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
                 <img src={banner.src} alt={banner.alt} className="w-full h-auto object-cover" />
               </Link>
             ))}
