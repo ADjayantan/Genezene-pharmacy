@@ -11,18 +11,18 @@
    silently do nothing.
    ───────────────────────────────────────────────────────────── */
 :root {
-  --paper:       #FAF8F5;   /* page — clean creamy white */
-  --paper-deep:  #F0EBE1;   /* cards, tinted bands */
-  --paper-edge:  #E3DCD0;   /* hairline rules */
-  --ink:         #1B2622;   /* text — deep slate green */
+  --paper:       #FAF7F2;   /* page — warm off-white, never #FFF */
+  --paper-deep:  #F2ECE3;   /* cards, tinted bands */
+  --paper-edge:  #E6DDD0;   /* hairline rules */
+  --ink:         #1A2E28;   /* text — deep green-black, never #000 */
   --ink-soft:    #5C6B65;
-  --green:       #1F4A3D;   /* primary action — Forest Green */
-  --green-deep:  #14362B;   /* Deep Forest Green */
+  --green:       #1F4A3D;   /* primary action */
+  --green-deep:  #163329;
   --green-wash:  #E8F0EC;
-  --green-on:    #FFFFFF;   /* text on a green fill */
-  --amber:       #C2703D;   /* warm accent */
+  --green-on:    #FAF7F2;   /* text on a green fill */
+  --amber:       #C2703D;   /* the single warm accent */
   --amber-wash:  #FAEDE3;
-  --plum:        #7B3F5E;   /* PRESCRIPTION ONLY */
+  --plum:        #7B3F5E;   /* PRESCRIPTION ONLY — never decorative */
   --plum-wash:   #F5E9EF;
   --in:          #2D6A4F;
   --low:         #B4690E;
