@@ -29,35 +29,7 @@
   --out:         #A33A32;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper:      #14201C;
-    --paper-deep: #1C2B26;
-    --paper-edge: #2A3B35;
-    --ink:        #EDE7DD;
-    --ink-soft:   #9DAAA4;
-    --green:      #6BAF95;
-    --green-deep: #8FC7B0;
-    --green-wash: #1B322B;
-    --green-on:   #0E1C17;
-    --amber:      #E0965E;
-    --amber-wash: #2E2018;
-    --plum:       #C88BA6;
-    --plum-wash:  #2B1C24;
-    --in:         #6BAF95;
-    --low:        #D9A05B;
-    --out:        #D98A82;
-  }
-}
 
-:root[data-theme="dark"] {
-  --paper:#14201C; --paper-deep:#1C2B26; --paper-edge:#2A3B35;
-  --ink:#EDE7DD; --ink-soft:#9DAAA4;
-  --green:#6BAF95; --green-deep:#8FC7B0; --green-wash:#1B322B; --green-on:#0E1C17;
-  --amber:#E0965E; --amber-wash:#2E2018;
-  --plum:#C88BA6; --plum-wash:#2B1C24;
-  --in:#6BAF95; --low:#D9A05B; --out:#D98A82;
-}
 
 @theme inline {
   --color-paper:      var(--paper);
