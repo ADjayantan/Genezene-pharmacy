@@ -17,7 +17,12 @@ const TAG: Record<string, string> = {
 export async function OrdersSection() {
   const [orders, total] = await Promise.all([
     db.order.findMany({
-      include: { items: true, user: { select: { email: true } }, events: { orderBy: { at: 'asc' } } },
+      include: {
+        items: true,
+        user: { select: { email: true } },
+        events: { orderBy: { at: 'asc' } },
+        prescriptions: { select: { id: true, status: true } },
+      },
       orderBy: { createdAt: 'desc' },
       take: 8,
     }),
@@ -67,6 +72,11 @@ export async function OrdersSection() {
                   {o.notes && <p className="mt-1 text-[0.85rem] italic text-ink-soft">“{o.notes}”</p>}
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
+                  {o.prescriptions.map(rx => (
+                    <span key={rx.id} className={`mono rounded-[2px] px-2 py-[0.15rem] text-[0.62rem] font-medium uppercase tracking-[0.06em] ${TAG[rx.status]}`}>
+                      Rx {rx.status.toLowerCase()}
+                    </span>
+                  ))}
                   <span className={`mono rounded-[2px] px-2 py-[0.15rem] text-[0.62rem] font-medium uppercase tracking-[0.06em] ${TAG[o.status]}`}>
                     {o.status.toLowerCase()}
                   </span>

@@ -83,6 +83,35 @@ export default async function ProfilePage() {
         </div>
       </div>
 
+      {/* NOTIFICATIONS: Approved Prescriptions needing orders */}
+      {(() => {
+        const approvedRx = prescriptions.filter(rx => rx.status === 'APPROVED' && !rx.order);
+        if (approvedRx.length === 0) return null;
+        return (
+          <section className="mt-8 rounded-[4px] border border-green bg-green-wash p-5">
+            <div className="flex items-start gap-4">
+              <div className="mt-0.5 text-green">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-display text-[1.1rem] font-medium text-green-on">Prescription Approved</h3>
+                <p className="mt-1 text-[0.87rem] text-ink-soft">
+                  {approvedRx.length === 1 
+                    ? `Your prescription "${approvedRx[0].originalName || 'Prescription'}" has been verified by our pharmacist.` 
+                    : `You have ${approvedRx.length} prescriptions verified by our pharmacist.`} 
+                  You can now add prescription medicines to your cart and checkout.
+                </p>
+                <div className="mt-4">
+                  <ButtonLink href="/products" size="sm" className="bg-green text-green-on">
+                    Order medicines now →
+                  </ButtonLink>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
       <section className="mt-12">
         <RuleLabel>My orders</RuleLabel>
         {orders.length === 0 ? (
