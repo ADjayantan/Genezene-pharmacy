@@ -17,6 +17,7 @@ export function CheckoutForm({
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   if (!ready) return <div className="mt-8 h-64 animate-pulse rounded-[4px] bg-paper-deep" />;
 
@@ -30,17 +31,39 @@ export function CheckoutForm({
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (needsRx && !file) {
+      setErr('A prescription is required to complete this order. Please upload one below.');
+      return;
+    }
+    
     setBusy(true);
     setErr('');
+
+    let prescriptionId: string | undefined;
+
+    if (needsRx && file) {
+      const fd = new FormData();
+      fd.set('file', file);
+      fd.set('patientName', (e.currentTarget.elements.namedItem('name') as HTMLInputElement)?.value ?? '');
+      
+      const rxRes = await fetch('/api/prescriptions/upload', { method: 'POST', body: fd });
+      const rxData = await rxRes.json().catch(() => ({}));
+      
+      if (!rxRes.ok) {
+        setErr(rxData.message ?? 'Failed to upload prescription. Please check the file and try again.');
+        setBusy(false);
+        return;
+      }
+      prescriptionId = rxData.id;
+    }
 
     const res = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...Object.fromEntries(new FormData(e.currentTarget)),
-        // Only ids and quantities. Prices are recomputed server-side so a
-        // tampered payload cannot buy a ₹500 medicine for ₹1.
         items: lines.map((l) => ({ id: l.id, qty: l.qty })),
+        prescriptionId,
       }),
     });
 
@@ -113,11 +136,38 @@ export function CheckoutForm({
         </div>
 
         {needsRx && (
-          <Note tone="rx">
-            Your order includes prescription medicines. After placing it, please{' '}
-            <Link href="/upload-prescription" className="font-semibold underline">upload your prescription</Link>.
-            We dispatch only after a pharmacist verifies it.
-          </Note>
+          <>
+            <RuleLabel className="mt-10">Prescription Upload</RuleLabel>
+            <div className="mt-4 rounded-[3px] border-2 border-dashed border-plum/30 bg-plum/5 px-5 py-4">
+              <p className="text-[0.92rem] font-medium text-plum">Prescription Required</p>
+              <p className="mt-1 text-[0.78rem] text-ink-soft">
+                Your order includes prescription medicines. You must attach a valid prescription before placing this order.
+              </p>
+              <label className="mt-4 flex cursor-pointer items-center justify-center rounded-[3px] border border-plum bg-paper px-4 py-2.5 text-[0.87rem] font-semibold text-plum transition-colors hover:bg-plum hover:text-white">
+                <input 
+                  type="file" 
+                  accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f && f.size > 8 * 1024 * 1024) {
+                      setErr('File is too large (max 8MB).');
+                      setFile(null);
+                    } else {
+                      setFile(f || null);
+                      setErr('');
+                    }
+                  }}
+                />
+                {file ? file.name : 'Choose file or take photo'}
+              </label>
+              {file && (
+                <p className="mt-2 text-center text-[0.75rem] font-medium text-green">
+                  ✓ File attached. Ready to place order.
+                </p>
+              )}
+            </div>
+          </>
         )}
 
         {err && <p role="alert" className="mt-4 text-[0.87rem] text-out">{err}</p>}
