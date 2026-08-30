@@ -25,12 +25,15 @@ export function SiteHeader() {
     <>
       <div className="bg-green-deep py-2 text-green-on">
         <div className="container-x mono flex flex-wrap justify-center gap-x-5 gap-y-1 text-center text-[0.7rem] uppercase tracking-[0.06em]">
-          <span>Free delivery above ₹{site.offers.freeDeliveryAbove}</span>
+          <span>Medicines 18% OFF</span>
           <span className="border-l border-green-on/25 pl-5">
-            Code {site.offers.firstOrderCode} — 10% off first order
+            Surgical Items 25% OFF
+          </span>
+          <span className="border-l border-green-on/25 pl-5">
+            Adult Diapers 40% OFF
           </span>
           <span className="hidden border-l border-green-on/25 pl-5 md:inline">
-            Same-day dispatch before {site.offers.dispatchCutoff}
+            Doorstep Delivery within 10km of Ganapathy
           </span>
         </div>
       </div>

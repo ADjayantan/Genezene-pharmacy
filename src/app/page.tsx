@@ -19,7 +19,7 @@ export const metadata: Metadata = buildMetadata({
 const FAQS = [
   {
     q: 'Do you deliver medicines in Coimbatore?',
-    a: 'Yes. Genezenz Pharmacy delivers across Coimbatore including Ganapathy, Saibaba Colony, RS Puram, Peelamedu, Gandhipuram and Saravanampatti. Orders placed before 2 PM are dispatched the same day.',
+    a: 'Yes. Nanga doorstep deliver panrom (around Ganapathy within 10KMs). Orders placed before 2 PM are dispatched the same day.',
   },
   {
     q: 'How do I order prescription medicines?',
@@ -130,9 +130,15 @@ export default async function Home() {
               Medicines, <em className="font-normal italic">dispensed</em>
               <br />by people who know you.
             </h1>
-            <p className="mt-5 max-w-[36ch] text-[1.1rem] leading-relaxed text-ink-soft">
-              Genuine medicines checked by licensed pharmacists, delivered across Coimbatore
-              from our counter in Ganapathy.
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Medicines 18% OFF</span>
+              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Surgical Items 25% OFF</span>
+              <span className="rounded-[3px] bg-green px-3 py-1 text-[0.8rem] font-bold text-green-on">Adult Diapers 40% OFF</span>
+            </div>
+            
+            <p className="mt-5 max-w-[40ch] text-[1.1rem] leading-relaxed text-ink-soft">
+              Nanga doorstep deliver panrom (around Ganapathy within 10KMs). 
+              Ungalukkana medicines kidaikkala apdina Doctor's Prescription 🗒️ send pannunga.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -143,7 +149,7 @@ export default async function Home() {
             <div className="mono mt-9 flex flex-wrap gap-x-5 gap-y-1 border-t border-paper-edge pt-4 text-[0.68rem] uppercase tracking-[0.08em] text-ink-soft">
               <span>Pharmacist verified</span>
               <span className="border-l border-paper-edge pl-5">Same-day dispatch</span>
-              <span className="border-l border-paper-edge pl-5">Free above ₹{site.offers.freeDeliveryAbove}</span>
+              <span className="border-l border-paper-edge pl-5">Ganapathy & 10km radius</span>
             </div>
           </div>
 
