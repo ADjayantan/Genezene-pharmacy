@@ -144,6 +144,8 @@ body {
 @media (pointer: coarse) {
   :where(button, a, select, summary, input[type="checkbox"]) { min-height: 44px; }
   :where(.mono, small) { font-size: max(0.78rem, 13px); }
+  /* Eliminate the 300ms tap delay on mobile devices, making buttons feel instantly responsive */
+  :where(button, a, input, select, textarea) { touch-action: manipulation; }
 }
 
 /* Native disclosure, styled with a serif +/− instead of the
