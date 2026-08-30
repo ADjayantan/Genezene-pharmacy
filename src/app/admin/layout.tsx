@@ -33,34 +33,52 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           a glance tells you which side of the business you are looking at.
           Hidden when printing so an invoice comes out as a clean white sheet. */}
       <div className="bg-ink text-paper print:hidden">
-        <div className="container-x flex h-auto min-h-[3.5rem] flex-wrap items-center justify-between gap-y-3 py-3 sm:py-0">
-          <div className="flex items-center gap-4">
+        <div className="container-x flex flex-col sm:flex-row sm:h-auto min-h-[3.5rem] items-start sm:items-center justify-between gap-y-3 py-3 sm:py-0">
+          {/* Top Row on Mobile: Logo + Actions */}
+          <div className="flex w-full sm:w-auto items-center justify-between gap-4">
             <span className="flex items-center gap-2.5">
               <Logo size={24} />
-              <span className="mono hidden text-[0.68rem] uppercase tracking-[0.16em] opacity-90 sm:inline">
+              <span className="mono text-[0.68rem] uppercase tracking-[0.16em] opacity-90">
                 Back office
               </span>
             </span>
 
-            <nav aria-label="Admin" className="flex items-center gap-4 text-[0.82rem]">
-              {NAV.map((n) => (
-                <Link key={n.href} href={n.href} className="opacity-70 transition-opacity hover:opacity-100">
-                  {n.label}
-                </Link>
-              ))}
-            </nav>
+            {/* Actions (Shop & Sign out) - right aligned on mobile */}
+            <div className="flex items-center gap-3 sm:hidden">
+              <Link
+                href="/"
+                className="mono text-[0.66rem] uppercase tracking-[0.1em] opacity-60 transition-opacity hover:opacity-100"
+              >
+                Shop ↗
+              </Link>
+              <form action="/api/auth/logout" method="post">
+                <button className="mono rounded-[3px] border border-paper/30 px-2 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100">
+                  Sign out
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          {/* Nav Links - bottom row on mobile, inline on desktop */}
+          <nav aria-label="Admin" className="flex items-center gap-4 text-[0.82rem] w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} className="opacity-70 transition-opacity hover:opacity-100 whitespace-nowrap">
+                {n.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Desktop Actions */}
+          <div className="hidden sm:flex items-center gap-4">
             <Link
               href="/"
               className="mono text-[0.66rem] uppercase tracking-[0.1em] opacity-60 transition-opacity hover:opacity-100"
             >
               Shop ↗
             </Link>
-            <span className="mono hidden text-[0.66rem] opacity-50 sm:inline">{session.email}</span>
+            <span className="mono text-[0.66rem] opacity-50">{session.email}</span>
             <form action="/api/auth/logout" method="post">
-              <button className="mono rounded-[3px] border border-paper/30 px-2 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100 sm:px-3">
+              <button className="mono rounded-[3px] border border-paper/30 px-3 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100">
                 Sign out
               </button>
             </form>

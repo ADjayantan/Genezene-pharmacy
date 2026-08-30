@@ -73,7 +73,7 @@ export default async function AdminDashboard() {
             Nothing waiting. Everything has been actioned.
           </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {[
               { label: 'Prescriptions to review', value: rxPending, href: '#s-rx', urgent: rxPending > 0 },
               { label: 'Orders to confirm', value: pendingOrders, href: '#s-orders', urgent: pendingOrders > 0 },
