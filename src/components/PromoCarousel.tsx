@@ -33,12 +33,13 @@ const BANNERS = [
 export function PromoCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isAutoScrolling = useRef(false);
 
   // Auto-play slideshow logic
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % BANNERS.length);
-    }, 4000); // Change slide every 4 seconds
+    }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
   }, []);
@@ -46,16 +47,25 @@ export function PromoCarousel() {
   // Sync scroll position with current index
   useEffect(() => {
     if (containerRef.current) {
+      isAutoScrolling.current = true;
       const scrollWidth = containerRef.current.clientWidth;
       containerRef.current.scrollTo({
         left: scrollWidth * currentIndex,
         behavior: 'smooth'
       });
+      
+      // Allow scroll to finish before accepting manual scroll events again
+      const t = setTimeout(() => {
+        isAutoScrolling.current = false;
+      }, 600);
+      return () => clearTimeout(t);
     }
   }, [currentIndex]);
 
   // Handle manual scroll snapping
   const handleScroll = () => {
+    if (isAutoScrolling.current) return;
+    
     if (containerRef.current) {
       const scrollLeft = containerRef.current.scrollLeft;
       const scrollWidth = containerRef.current.clientWidth;
