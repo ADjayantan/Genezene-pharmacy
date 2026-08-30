@@ -136,7 +136,7 @@ export default async function Home() {
               { src: '/banners/banner-active.png', alt: 'Stay Active & Well', href: '/products?cat=pain-relief' },
             ].map((banner, i) => (
               <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
-                <img src={banner.src} alt={banner.alt} className="w-full h-auto object-cover" />
+                <img src={banner.src} alt={banner.alt} className="w-full aspect-[10/4] sm:aspect-[21/6] md:aspect-[4/1] object-cover rounded-md" />
               </Link>
             ))}
           </div>
