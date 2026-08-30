@@ -11,8 +11,21 @@ export const site = {
   url: (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, ''),
 
   description:
-    'Order genuine medicines, vitamins and health products online from Genezenz Pharmacy, ' +
-    'Ganapathy, Coimbatore. CDSCO-licensed, pharmacist-verified, same-day dispatch.',
+    'Order genuine medicines, healthcare products, and vitamins online from Genezenz Pharmacy in Ganapathy, Coimbatore. Upload your prescription for fast, CDSCO-licensed, same-day medicine delivery across Coimbatore.',
+
+  keywords: [
+    // Primary High-Volume
+    'online pharmacy Coimbatore', 'buy medicines online Coimbatore', 'medicine delivery Coimbatore',
+    // Local / Hyper-local
+    'medical shop Ganapathy', 'pharmacy near me Ganapathy', '24/7 medical shop Coimbatore', 
+    'best pharmacy in Coimbatore', 'Genezenz Pharmacy', 'medical store Saravanampatti',
+    // Action-oriented
+    'prescription upload pharmacy online', 'order prescription drugs online Coimbatore', 
+    'same day medicine delivery Coimbatore', 'buy healthcare products online',
+    // Niche / Trust signals
+    'CDSCO licensed pharmacy', 'genuine medicines online', 'pharmacist verified online store',
+    'Ayurvedic medicines Coimbatore', 'baby care products online', 'health supplements Coimbatore'
+  ],
 
   phone: '+918044560873',
   phoneDisplay: '+91 80445 60873',
