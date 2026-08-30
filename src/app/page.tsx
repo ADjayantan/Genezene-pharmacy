@@ -19,7 +19,7 @@ export const metadata: Metadata = buildMetadata({
 const FAQS = [
   {
     q: 'Do you deliver medicines in Coimbatore?',
-    a: 'Yes. Nanga doorstep deliver panrom (around Ganapathy within 10KMs). Orders placed before 2 PM are dispatched the same day.',
+    a: 'Yes. We offer doorstep delivery (within a 10km radius of Ganapathy). Orders placed before 2 PM are dispatched the same day.',
   },
   {
     q: 'How do I order prescription medicines?',
@@ -137,8 +137,8 @@ export default async function Home() {
             </div>
             
             <p className="mt-5 max-w-[40ch] text-[1.1rem] leading-relaxed text-ink-soft">
-              Nanga doorstep deliver panrom (around Ganapathy within 10KMs). 
-              Ungalukkana medicines kidaikkala apdina Doctor's Prescription 🗒️ send pannunga.
+              We offer doorstep delivery (within a 10km radius of Ganapathy). 
+              If you can't find the medicines you need, just send us your Doctor's prescription 🗒️
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
