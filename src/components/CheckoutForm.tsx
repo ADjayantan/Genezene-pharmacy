@@ -159,7 +159,7 @@ export function CheckoutForm({
                     }
                   }}
                 />
-                {file ? file.name : 'Choose file or take photo'}
+                <span className="truncate max-w-[250px]">{file ? file.name : 'Choose file or take photo'}</span>
               </label>
               {file && (
                 <p className="mt-2 text-center text-[0.75rem] font-medium text-green">
@@ -174,7 +174,7 @@ export function CheckoutForm({
 
         {/* Anxiety peaks at the last step. A pharmacy's answer to that is a
             person on the phone, not a chat bubble. */}
-        <p className="mt-6 text-[0.82rem] text-ink-soft">
+        <p className="mt-6 text-[0.82rem] text-ink-soft mb-24 sm:mb-0">
           Not sure about something? Call the counter on{' '}
           <a href={`tel:${site.phone}`} className="mono font-semibold text-green">{site.phoneDisplay}</a>{' '}
           and a pharmacist will take the order over the phone instead.
@@ -205,9 +205,11 @@ export function CheckoutForm({
 
           <DeliveryProgress subtotal={subtotal} />
 
-          <Button tone="primary" full type="submit" disabled={busy} className="mt-5">
-            {busy ? 'Placing order…' : 'Place order'}
-          </Button>
+          <div className="fixed inset-x-0 bottom-0 z-50 p-4 bg-paper border-t border-paper-edge shadow-[0_-10px_30px_rgba(0,0,0,0.08)] sm:static sm:p-0 sm:bg-transparent sm:border-none sm:shadow-none sm:mt-5">
+            <Button tone="primary" full type="submit" disabled={busy} className="py-3 sm:py-2 text-[0.95rem] sm:text-[0.87rem]">
+              {busy ? 'Placing order…' : 'Place order'}
+            </Button>
+          </div>
         </div>
       </aside>
     </form>
