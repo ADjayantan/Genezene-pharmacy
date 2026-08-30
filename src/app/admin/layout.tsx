@@ -33,32 +33,34 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           a glance tells you which side of the business you are looking at.
           Hidden when printing so an invoice comes out as a clean white sheet. */}
       <div className="bg-ink text-paper print:hidden">
-        <div className="container-x flex h-14 items-center gap-5">
-          <span className="flex items-center gap-2.5">
-            <Logo size={24} />
-            <span className="mono text-[0.68rem] uppercase tracking-[0.16em] opacity-90">
-              Back office
+        <div className="container-x flex h-auto min-h-[3.5rem] flex-wrap items-center justify-between gap-y-3 py-3 sm:py-0">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-2.5">
+              <Logo size={24} />
+              <span className="mono hidden text-[0.68rem] uppercase tracking-[0.16em] opacity-90 sm:inline">
+                Back office
+              </span>
             </span>
-          </span>
 
-          <nav aria-label="Admin" className="ml-4 flex items-center gap-5 text-[0.82rem]">
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="opacity-70 transition-opacity hover:opacity-100">
-                {n.label}
-              </Link>
-            ))}
-          </nav>
+            <nav aria-label="Admin" className="flex items-center gap-4 text-[0.82rem]">
+              {NAV.map((n) => (
+                <Link key={n.href} href={n.href} className="opacity-70 transition-opacity hover:opacity-100">
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-          <div className="ml-auto flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/"
               className="mono text-[0.66rem] uppercase tracking-[0.1em] opacity-60 transition-opacity hover:opacity-100"
             >
-              View shop ↗
+              Shop ↗
             </Link>
             <span className="mono hidden text-[0.66rem] opacity-50 sm:inline">{session.email}</span>
             <form action="/api/auth/logout" method="post">
-              <button className="mono rounded-[3px] border border-paper/30 px-3 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100">
+              <button className="mono rounded-[3px] border border-paper/30 px-2 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100 sm:px-3">
                 Sign out
               </button>
             </form>
