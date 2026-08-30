@@ -132,39 +132,51 @@ export default async function Home() {
             {[
               { 
                 src: '/banners/banner-welcome-desktop.png', 
-                mobileSrc: '/banners/banner-welcome-mobile.png', 
-                alt: 'Welcome to Genezenz Pharmacy - Flat 20% off your first order', 
+                alt: 'Welcome to Genezenz Pharmacy - Flat 20% off your first order (Desktop)', 
+                href: '/products' 
+              },
+              { 
+                src: '/banners/banner-welcome-mobile.png', 
+                alt: 'Welcome to Genezenz Pharmacy - Flat 20% off your first order (Mobile)', 
                 href: '/products' 
               },
               { 
                 src: '/banners/banner-medicines-desktop.png', 
-                mobileSrc: '/banners/banner-medicines-mobile.png', 
-                alt: 'Genuine Medicines at 18% Off - Upload Rx', 
+                alt: 'Genuine Medicines at 18% Off - Upload Rx (Desktop)', 
+                href: '/upload-prescription' 
+              },
+              { 
+                src: '/banners/banner-medicines-mobile.png', 
+                alt: 'Genuine Medicines at 18% Off - Upload Rx (Mobile)', 
                 href: '/upload-prescription' 
               },
               { 
                 src: '/banners/banner-skincare-desktop.png', 
-                mobileSrc: '/banners/banner-skincare-mobile.png', 
-                alt: 'Radiant Skin, Healthy Glow - Derma & Beauty Care', 
+                alt: 'Radiant Skin, Healthy Glow - Derma & Beauty Care (Desktop)', 
+                href: '/products?cat=personal-care' 
+              },
+              { 
+                src: '/banners/banner-skincare-mobile.png', 
+                alt: 'Radiant Skin, Healthy Glow - Derma & Beauty Care (Mobile)', 
                 href: '/products?cat=personal-care' 
               },
               { 
                 src: '/banners/banner-active-desktop.png', 
-                mobileSrc: '/banners/banner-active-mobile.png', 
-                alt: 'Stay Active & Pain-Free - Wellness & Fitness', 
+                alt: 'Stay Active & Pain-Free - Wellness & Fitness (Desktop)', 
+                href: '/products?cat=pain-relief' 
+              },
+              { 
+                src: '/banners/banner-active-mobile.png', 
+                alt: 'Stay Active & Pain-Free - Wellness & Fitness (Mobile)', 
                 href: '/products?cat=pain-relief' 
               },
             ].map((banner, i) => (
               <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
-                <picture>
-                  <source media="(max-width: 767px)" srcSet={banner.mobileSrc} />
-                  <source media="(min-width: 768px)" srcSet={banner.src} />
-                  <img 
-                    src={banner.src} 
-                    alt={banner.alt} 
-                    className="w-full aspect-[2/1] object-cover rounded-lg shadow-sm" 
-                  />
-                </picture>
+                <img 
+                  src={banner.src} 
+                  alt={banner.alt} 
+                  className="w-full h-auto aspect-[2/1] object-contain rounded-lg shadow-sm" 
+                />
               </Link>
             ))}
           </div>
