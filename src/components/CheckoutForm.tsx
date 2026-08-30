@@ -85,14 +85,14 @@ export function CheckoutForm({
             when they can see where they are in it. Three visible steps also
             answer the question that drives most checkout abandonment —
             "how much more of this is there?" */}
-        <ol className="mono mb-8 flex items-center gap-3 text-[0.66rem] uppercase tracking-[0.1em]">
+        <ol className="mono mb-8 flex flex-wrap items-center gap-2 sm:gap-3 text-[0.66rem] uppercase tracking-[0.1em]">
           {['Cart', 'Details', 'Done'].map((s, i) => (
-            <li key={s} className="flex items-center gap-3">
-              <span className={i <= 1 ? 'text-green' : 'text-ink-soft'}>
-                <span className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-[1px] ${i <= 1 ? 'bg-green' : 'bg-paper-edge'}`} />
+            <li key={s} className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <span className={`flex items-center ${i <= 1 ? 'text-green' : 'text-ink-soft'}`}>
+                <span className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-[1px] shrink-0 ${i <= 1 ? 'bg-green' : 'bg-paper-edge'}`} />
                 {s}
               </span>
-              {i < 2 && <span className="h-px w-6 bg-paper-edge" />}
+              {i < 2 && <span className="h-px w-4 sm:w-6 bg-paper-edge shrink-0" />}
             </li>
           ))}
         </ol>
@@ -143,7 +143,7 @@ export function CheckoutForm({
               <p className="mt-1 text-[0.78rem] text-ink-soft">
                 Your order includes prescription medicines. You must attach a valid prescription before placing this order.
               </p>
-              <label className="mt-4 flex cursor-pointer items-center justify-center rounded-[3px] border border-plum bg-paper px-4 py-2.5 text-[0.87rem] font-semibold text-plum transition-colors hover:bg-plum hover:text-white">
+              <label className="mt-4 flex cursor-pointer items-center justify-center rounded-[3px] border border-plum bg-paper px-4 py-2.5 text-[0.87rem] font-semibold text-plum transition-colors hover:bg-plum hover:text-white w-full overflow-hidden">
                 <input 
                   type="file" 
                   accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
@@ -159,7 +159,9 @@ export function CheckoutForm({
                     }
                   }}
                 />
-                <span className="truncate max-w-[250px]">{file ? file.name : 'Choose file or take photo'}</span>
+                <span className="block w-full min-w-0 truncate text-center">
+                  {file ? file.name : 'Choose file or take photo'}
+                </span>
               </label>
               {file && (
                 <p className="mt-2 text-center text-[0.75rem] font-medium text-green">
