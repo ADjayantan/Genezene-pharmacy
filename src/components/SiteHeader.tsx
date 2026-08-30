@@ -40,7 +40,7 @@ export function SiteHeader() {
       <header className="sticky top-0 z-40 border-b border-paper-edge bg-paper/95 backdrop-blur">
         <div className="container-x flex h-16 items-center gap-5">
           <Link href="/" aria-label={`${site.name} home`}>
-            <Wordmark hideSuffix />
+            <Wordmark />
           </Link>
 
           {/* Search is the primary task on a pharmacy site — people arrive with

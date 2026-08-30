@@ -16,12 +16,12 @@ export function Logo({ size = 32 }: { size?: number }) {
 
 export function Wordmark({ size = 32, hideSuffix = false }: { size?: number; hideSuffix?: boolean }) {
   return (
-    <span className="flex shrink-0 items-center gap-2.5">
+    <span className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
       <Logo size={size} />
-      <span>
-        <span className="font-display text-[1.15rem] font-semibold tracking-[-0.02em]">Genezenz</span>
-        <span className={`text-[0.95rem] text-ink-soft ${hideSuffix ? 'hidden sm:inline' : ''}`}>
-          {' '}Pharmacy
+      <span className="flex items-baseline gap-1.5">
+        <span className="font-display text-[1.1rem] sm:text-[1.15rem] font-semibold tracking-[-0.02em]">Genezenz</span>
+        <span className={`font-display text-[1.1rem] sm:text-[1.15rem] font-semibold tracking-[-0.02em] text-green ${hideSuffix ? 'hidden sm:inline' : ''}`}>
+          Pharmacy
         </span>
       </span>
     </span>
