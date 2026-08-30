@@ -5,6 +5,7 @@ import { buildMetadata, JsonLd, faqSchema } from '@/lib/seo';
 import { LeadForm } from '@/components/LeadForm';
 import { ProductCard } from '@/components/ProductCard';
 import { ButtonLink, Panel, RuleLabel } from '@/components/ui';
+import { PromoCarousel } from '@/components/PromoCarousel';
 import Link from 'next/link';
 
 export const revalidate = 300;
@@ -120,59 +121,7 @@ export default async function Home() {
       <JsonLd data={faqSchema(FAQS)} />
 
       {/* PROMO BANNERS CAROUSEL */}
-      <section className="border-b border-paper-edge bg-paper-deep pt-3 pb-3 md:pt-6 md:pb-6 overflow-hidden w-full">
-        <div className="container-x relative w-full max-w-full">
-          <div 
-            className="flex w-full snap-x snap-mandatory overflow-x-auto rounded-lg shadow-sm scroll-smooth"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            <style dangerouslySetInnerHTML={{ __html: `
-              .flex.snap-x::-webkit-scrollbar { display: none; }
-            `}} />
-            {[
-              { 
-                src: '/banners/banner-welcome-desktop.png', 
-                mobileSrc: '/banners/banner-welcome-mobile.png', 
-                alt: 'Welcome to Genezenz Pharmacy - Flat 20% off your first order', 
-                href: '/products' 
-              },
-              { 
-                src: '/banners/banner-medicines-desktop.png', 
-                mobileSrc: '/banners/banner-medicines-mobile.png', 
-                alt: 'Genuine Medicines at 18% Off - Upload Rx', 
-                href: '/upload-prescription' 
-              },
-              { 
-                src: '/banners/banner-skincare-desktop.png', 
-                mobileSrc: '/banners/banner-skincare-mobile.png', 
-                alt: 'Radiant Skin, Healthy Glow - Derma & Beauty Care', 
-                href: '/products?cat=personal-care' 
-              },
-              { 
-                src: '/banners/banner-active-desktop.png', 
-                mobileSrc: '/banners/banner-active-mobile.png', 
-                alt: 'Stay Active & Pain-Free - Wellness & Fitness', 
-                href: '/products?cat=pain-relief' 
-              },
-            ].map((banner, i) => (
-              <Link key={i} href={banner.href} className="w-full min-w-full snap-start shrink-0 block">
-                <picture>
-                  <source media="(max-width: 767px)" srcSet={banner.mobileSrc} />
-                  <source media="(min-width: 768px)" srcSet={banner.src} />
-                  <img 
-                    src={banner.src} 
-                    alt={banner.alt} 
-                    className="w-full h-auto aspect-[2/1] object-contain rounded-lg shadow-sm" 
-                  />
-                </picture>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-2 md:mt-3 flex justify-center text-[0.65rem] md:text-[0.75rem] font-medium text-ink-soft uppercase tracking-wider">
-            <span>← Swipe for more offers →</span>
-          </div>
-        </div>
-      </section>
+      <PromoCarousel />
 
       {/* HERO */}
       <section className="border-b border-paper-edge">
