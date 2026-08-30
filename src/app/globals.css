@@ -60,7 +60,10 @@
   --radius-card: 4px;
 }
 
-html { scroll-behavior: smooth; }
+html { 
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
 body {
   background: var(--paper);
@@ -73,6 +76,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 /* Fraunces is variable — dial the softness down and let optical
