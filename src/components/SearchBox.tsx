@@ -32,7 +32,7 @@ export function SearchBox() {
         const r = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}`, { signal: ctrl.signal });
         if (r.ok) { setRes(await r.json()); setOpen(true); }
       } catch { /* aborted or offline */ }
-    }, 220);
+    }, 350);
     return () => { clearTimeout(t); ctrl.abort(); };
   }, [q]);
 
@@ -52,10 +52,12 @@ export function SearchBox() {
   const row = (h: Hit, i: number) => (
     <li key={h.id} role="option" aria-selected={i === active}>
       <button
-        onMouseEnter={() => setActive(i)}
+        onPointerEnter={(e) => {
+          if (e.pointerType === 'mouse' && active !== i) setActive(i);
+        }}
         onClick={() => go(h.slug)}
-        className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left ${
-          i === active ? 'bg-green-wash' : ''
+        className={`flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-colors ${
+          i === active ? 'bg-green-wash' : 'hover:bg-green-wash/50'
         }`}
       >
         <span className="min-w-0">
