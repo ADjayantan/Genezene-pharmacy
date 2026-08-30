@@ -11,19 +11,19 @@
    silently do nothing.
    ───────────────────────────────────────────────────────────── */
 :root {
-  --paper:       #FAF7F2;   /* page — warm off-white, never #FFF */
-  --paper-deep:  #F2ECE3;   /* cards, tinted bands */
-  --paper-edge:  #E6DDD0;   /* hairline rules */
-  --ink:         #1A2E28;   /* text — deep green-black, never #000 */
-  --ink-soft:    #5C6B65;
-  --green:       #1F4A3D;   /* primary action */
-  --green-deep:  #163329;
-  --green-wash:  #E8F0EC;
-  --green-on:    #FAF7F2;   /* text on a green fill */
-  --amber:       #C2703D;   /* the single warm accent */
-  --amber-wash:  #FAEDE3;
-  --plum:        #7B3F5E;   /* PRESCRIPTION ONLY — never decorative */
-  --plum-wash:   #F5E9EF;
+  --paper:       #FDFBF7;   /* page — very soft creamy white */
+  --paper-deep:  #F5EFE6;   /* cards, tinted bands */
+  --paper-edge:  #E8DED1;   /* hairline rules */
+  --ink:         #2C2A28;   /* text — deep warm charcoal */
+  --ink-soft:    #7A736E;
+  --green:       #8A7D6A;   /* primary action — warm earthy taupe/gold */
+  --green-deep:  #706453;
+  --green-wash:  #F2EBE1;
+  --green-on:    #FFFFFF;   /* text on a primary fill */
+  --amber:       #C1935E;   /* the single warm accent */
+  --amber-wash:  #FDF3E7;
+  --plum:        #A46571;   /* PRESCRIPTION ONLY — muted rose/plum */
+  --plum-wash:   #F8EAEC;
   --in:          #2D6A4F;
   --low:         #B4690E;
   --out:         #A33A32;
