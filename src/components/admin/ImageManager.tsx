@@ -1,29 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MortarGlyph } from '@/components/ui';
 
-/**
- * Image gallery editor.
- *
- * The first image is the primary one — it is what appears on cards, in search
- * and in the OpenGraph tag. "Make primary" reorders rather than adding a
- * separate flag, so there is exactly one source of truth for the order.
- *
- * The values are submitted as a single hidden input (newline separated) so the
- * whole form still works as a plain server action with no client-side
- * submission handler.
- */
 export function ImageManager({ name, initial = [] }: { name: string; initial?: string[] }) {
   const [images, setImages] = useState<string[]>(initial);
   const [draft, setDraft] = useState('');
   const [err, setErr] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function add() {
     const url = draft.trim();
     if (!url) return;
-    // Restrict to http(s). This value ends up in an <img src>, and z.url()
-    // alone would happily accept javascript: or data:.
     try {
       if (!['http:', 'https:'].includes(new URL(url).protocol)) throw new Error();
     } catch {
@@ -36,13 +25,43 @@ export function ImageManager({ name, initial = [] }: { name: string; initial?: s
     setDraft('');
   }
 
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setErr('');
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const res = await fetch('/api/admin/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!res.ok) throw new Error('Failed to upload');
+      const data = await res.json();
+      
+      setImages((prev) => [...prev, data.url]);
+    } catch (error) {
+      console.error(error);
+      setErr('Error uploading image. Check if Vercel Blob is configured.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  }
+
   const makePrimary = (i: number) =>
     setImages([images[i], ...images.filter((_, x) => x !== i)]);
   const remove = (i: number) => setImages(images.filter((_, x) => x !== i));
 
   return (
     <div>
-      {/* One hidden field carries the whole gallery to the server action. */}
       <input type="hidden" name={name} value={images.join('\n')} />
 
       {images.length === 0 ? (
@@ -100,7 +119,7 @@ export function ImageManager({ name, initial = [] }: { name: string; initial?: s
           value={draft}
           onChange={(e) => { setDraft(e.target.value); setErr(''); }}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
-          placeholder="https://res.cloudinary.com/…"
+          placeholder="https://..."
           aria-label="Image URL"
           className="mono flex-1 rounded-[3px] border border-paper-edge bg-paper px-3 py-2 text-[0.8rem] outline-none focus:border-green"
         />
@@ -109,14 +128,29 @@ export function ImageManager({ name, initial = [] }: { name: string; initial?: s
           onClick={add}
           className="rounded-[3px] border border-green px-4 text-[0.8rem] font-semibold text-green hover:bg-green-wash"
         >
-          Add
+          Add URL
         </button>
+      </div>
+      
+      <div className="mt-3">
+        <div className="flex items-center gap-2">
+           <span className="text-[0.72rem] text-ink-soft uppercase tracking-wider font-semibold">Or upload directly:</span>
+           <input 
+             type="file" 
+             accept="image/*"
+             onChange={handleFileUpload}
+             disabled={uploading}
+             ref={fileInputRef}
+             className="text-[0.75rem] file:mr-3 file:py-1.5 file:px-3 file:rounded-[3px] file:border file:border-paper-edge file:text-[0.75rem] file:font-semibold file:bg-paper hover:file:bg-paper-deep cursor-pointer"
+           />
+           {uploading && <span className="text-[0.72rem] text-green">Uploading...</span>}
+        </div>
       </div>
 
       {err && <p role="alert" className="mt-2 text-[0.8rem] text-out">{err}</p>}
 
       <p className="mt-2 text-[0.72rem] text-ink-soft">
-        Upload the photo to the shop&apos;s Cloudinary account and paste the URL here. Do not link
+        Upload a file directly, or paste a URL from Cloudinary. Do not link
         images from 1mg, PharmEasy or Netmeds — that is their copyright, and they can change or
         block the file at any time, which would silently break the page.
       </p>

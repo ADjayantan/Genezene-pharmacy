@@ -21,7 +21,7 @@ export function JumpNav({ items }: { items: { id: string; label: string; count?:
           >
             {i.label}
             {!!i.count && (
-              <span className="ml-1.5 rounded-[2px] bg-amber px-1 text-[0.6rem] text-paper">{i.count}</span>
+              <span className="ml-1.5 inline-block min-w-[1.25rem] rounded-[2px] bg-amber px-1 text-center text-[0.6rem] text-paper">{i.count}</span>
             )}
           </a>
         ))}
@@ -37,7 +37,7 @@ export function Section({
   aside?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="mb-16 scroll-mt-36">
+    <section id={id} className="mb-16 scroll-mt-36 border-l-[2px] border-paper-edge pl-5">
       <div className="border-t border-paper-edge pt-3">
         <span className="mono block text-[0.68rem] uppercase tracking-[0.12em] text-ink-soft">{label}</span>
       </div>

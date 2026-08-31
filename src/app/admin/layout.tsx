@@ -1,24 +1,13 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { getSession } from '@/lib/auth';
-import { Logo } from '@/components/Logo';
 import { site } from '@/lib/config';
+import { SidebarNav } from '@/components/admin/SidebarNav';
 
 export const metadata = { robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
-/* Not a section menu — the dashboard holds everything. This is a way back
-   from the product editor, and the old per-section routes still resolve for
-   deep links and bookmarks. */
-const NAV = [
-  { href: '/admin', label: 'Dashboard' },
-  { href: '/admin/products', label: 'All products' },
-];
-
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  // middleware sets x-pathname (set, not appended — a client cannot forge it),
-  // so the guard can tell /admin/login apart from the pages it must protect.
   const path = (await headers()).get('x-pathname') ?? '';
   const session = await getSession();
 
@@ -28,51 +17,34 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="admin-scope min-h-screen">
-      {/* A dark chrome bar you cannot mistake for the shop. The point is that
-          a glance tells you which side of the business you are looking at.
-          Hidden when printing so an invoice comes out as a clean white sheet. */}
-      <div className="bg-ink text-paper print:hidden">
-        <div className="container-x flex h-auto min-h-[3.5rem] flex-wrap items-center justify-between gap-y-3 py-3 sm:py-0">
+    <div className="admin-scope flex min-h-screen bg-paper">
+      {/* Sidebar - fixed width */}
+      <aside className="w-[260px] flex-shrink-0 fixed inset-y-0 left-0 z-10 hidden md:block">
+        <SidebarNav />
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 md:ml-[260px] flex flex-col min-h-screen">
+        {/* Top Header for mobile toggle / user info */}
+        <header className="flex h-[60px] items-center justify-end px-8 border-b border-paper-edge bg-paper print:hidden">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-2.5">
-              <Logo size={24} />
-              <span className="mono hidden text-[0.68rem] uppercase tracking-[0.16em] opacity-90 sm:inline">
-                Back office
-              </span>
-            </span>
-
-            <nav aria-label="Admin" className="flex items-center gap-4 text-[0.82rem]">
-              {NAV.map((n) => (
-                <Link key={n.href} href={n.href} className="opacity-70 transition-opacity hover:opacity-100">
-                  {n.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Link
-              href="/"
-              className="mono text-[0.66rem] uppercase tracking-[0.1em] opacity-60 transition-opacity hover:opacity-100"
-            >
-              Shop ↗
-            </Link>
-            <span className="mono hidden text-[0.66rem] opacity-50 sm:inline">{session.email}</span>
+            <span className="mono text-[0.7rem] text-ink">{session.email}</span>
             <form action="/api/auth/logout" method="post">
-              <button className="mono rounded-[3px] border border-paper/30 px-2 py-1 text-[0.66rem] uppercase tracking-[0.08em] opacity-80 transition-opacity hover:opacity-100 sm:px-3">
+              <button className="mono rounded-[3px] border border-paper-edge px-3 py-1.5 text-[0.66rem] uppercase tracking-[0.08em] text-ink hover:bg-paper-deep hover:text-out transition-colors">
                 Sign out
               </button>
             </form>
           </div>
+        </header>
+
+        <div className="flex-1 px-8 py-8 md:px-12 md:py-10 max-w-6xl">
+          {children}
         </div>
-      </div>
 
-      <div className="container-x py-8 pb-24">{children}</div>
-
-      <footer className="mono border-t border-paper-edge py-5 text-center text-[0.66rem] uppercase tracking-[0.08em] text-ink-soft">
-        {site.name} back office · not indexed · {new Date().getFullYear()}
-      </footer>
+        <footer className="mono border-t border-paper-edge py-6 text-center text-[0.66rem] uppercase tracking-[0.08em] text-ink-soft mt-auto">
+          {site.name} back office · not indexed · {new Date().getFullYear()}
+        </footer>
+      </main>
     </div>
   );
 }
