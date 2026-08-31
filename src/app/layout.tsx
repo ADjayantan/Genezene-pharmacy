@@ -11,6 +11,7 @@ import { CookieConsent } from '@/components/CookieConsent';
 import { Analytics } from '@/components/Analytics';
 import { CartProvider } from '@/components/CartProvider';
 import { ToastProvider } from '@/components/Toast';
+import { StorefrontUI } from '@/components/StorefrontUI';
 
 /* Self-hosted by next/font: no request to Google at runtime, no layout
    shift, and the fonts keep working if the CDN is blocked. */
@@ -88,11 +89,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <ToastProvider>
           <CartProvider>
-            <SiteHeader />
+            <StorefrontUI>
+              <SiteHeader />
+            </StorefrontUI>
             <main id="main">{children}</main>
-            <SiteFooter />
-            <WhatsAppFab />
-            <ChatWidget />
+            <StorefrontUI>
+              <SiteFooter />
+              <WhatsAppFab />
+              <ChatWidget />
+            </StorefrontUI>
             <CookieConsent />
             <Analytics />
           </CartProvider>
