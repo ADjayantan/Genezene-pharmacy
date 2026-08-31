@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { db } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth';
 import { MoneySection } from '@/components/admin/sections/Money';
@@ -72,10 +73,14 @@ export default async function AdminDashboard() {
         )}
       </section>
 
-      <MoneySection />
+      <Suspense fallback={<div className="h-40 animate-pulse rounded bg-paper-edge/50"></div>}>
+        <MoneySection />
+      </Suspense>
       
       <div id="s-expiry">
-        <ExpirySection />
+        <Suspense fallback={<div className="h-40 animate-pulse rounded bg-paper-edge/50"></div>}>
+          <ExpirySection />
+        </Suspense>
       </div>
     </div>
   );
