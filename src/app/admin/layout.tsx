@@ -26,13 +26,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-[260px] flex flex-col min-h-screen">
+      <main className="flex-1 min-w-0 md:ml-[260px] flex flex-col min-h-screen">
         {/* Top Header for mobile toggle / user info */}
-        <header className="flex h-[60px] items-center justify-between px-6 md:justify-end md:px-8 border-b border-paper-edge bg-paper print:hidden">
+        <header className="flex min-w-0 h-[60px] items-center justify-between px-6 md:justify-end md:px-8 border-b border-paper-edge bg-paper print:hidden">
           <MobileSidebar />
-          <div className="flex items-center gap-4">
-            <span className="mono text-[0.7rem] text-ink">{session.email}</span>
-            <form action="/api/auth/logout" method="post">
+          <div className="flex min-w-0 items-center gap-4">
+            <span className="mono text-[0.7rem] text-ink truncate max-w-[120px] sm:max-w-none" title={session.email}>
+              {session.email}
+            </span>
+            <form action="/api/auth/logout" method="post" className="shrink-0">
               <button className="mono rounded-[3px] border border-paper-edge px-3 py-1.5 text-[0.66rem] uppercase tracking-[0.08em] text-ink hover:bg-paper-deep hover:text-out transition-colors">
                 Sign out
               </button>
@@ -40,7 +42,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </header>
 
-        <div className="flex-1 px-4 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10 max-w-6xl w-full">
+        <div className="flex-1 min-w-0 px-4 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10 max-w-6xl w-full">
           {children}
         </div>
 

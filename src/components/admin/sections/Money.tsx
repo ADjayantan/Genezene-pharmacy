@@ -10,10 +10,10 @@ const inr = (n: number) =>
 
 function Tile({ label, value, sub, warn }: { label: string; value: string; sub: string; warn?: boolean }) {
   return (
-    <div className={`rounded-[4px] border border-paper-edge bg-paper-deep p-5 ${warn ? 'border-t-2 border-t-out' : ''}`}>
-      <p className="mono text-[0.62rem] uppercase tracking-[0.1em] text-ink-soft">{label}</p>
-      <p className={`mono mt-2 text-[1.5rem] font-medium leading-none tracking-[-0.02em] ${warn ? 'text-out' : ''}`}>{value}</p>
-      <p className="mt-1.5 text-[0.75rem] text-ink-soft">{sub}</p>
+    <div className={`flex flex-col justify-between rounded-[4px] border border-paper-edge bg-paper-deep p-4 sm:p-5 ${warn ? 'border-t-2 border-t-out' : ''}`}>
+      <p className="mono text-[0.62rem] uppercase tracking-[0.1em] text-ink-soft truncate" title={label}>{label}</p>
+      <p className={`mono mt-2 text-[1.2rem] sm:text-[1.5rem] font-medium leading-none tracking-[-0.02em] truncate ${warn ? 'text-out' : ''}`}>{value}</p>
+      <p className="mt-1.5 text-[0.65rem] sm:text-[0.75rem] text-ink-soft leading-tight">{sub}</p>
     </div>
   );
 }

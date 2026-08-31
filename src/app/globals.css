@@ -172,6 +172,8 @@ details[open] > summary::before { content: '–'; }
     --paper-edge: #2B3239;
     --ink:        #E4E8EC;
     --ink-soft:   #8D99A5;
+    --green:      #76C19F;   /* Lightened for dark mode legibility */
+    --green-deep: #1D4032;
     --green-wash: #172A24;
     --amber:      #E0965E;
     --amber-wash: #2A1D16;
@@ -180,7 +182,8 @@ details[open] > summary::before { content: '–'; }
 }
 :root[data-theme="dark"] .admin-scope {
   --paper:#12161A; --paper-deep:#1A1F25; --paper-edge:#2B3239;
-  --ink:#E4E8EC; --ink-soft:#8D99A5; --green-wash:#172A24;
+  --ink:#E4E8EC; --ink-soft:#8D99A5; 
+  --green:#76C19F; --green-deep:#1D4032; --green-wash:#172A24;
   --amber:#E0965E; --amber-wash:#2A1D16; --out:#E57373;
 }
 

@@ -40,7 +40,7 @@ export default async function AdminDashboard() {
             Nothing waiting. Everything has been actioned.
           </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-4 grid-cols-2 lg:grid-cols-5">
             {[
               { label: 'Prescriptions to review', value: rxPending, href: '/admin/prescriptions', urgent: rxPending > 0 },
               { label: 'Orders to confirm', value: pendingOrders, href: '/admin/orders', urgent: pendingOrders > 0 },
@@ -51,16 +51,16 @@ export default async function AdminDashboard() {
               <Link
                 key={a.label}
                 href={a.href}
-                className={`rounded-[6px] border p-5 transition-all hover:-translate-y-0.5 hover:shadow-sm ${
+                className={`flex flex-col justify-between rounded-[6px] border p-4 sm:p-5 transition-all hover:-translate-y-0.5 hover:shadow-sm ${
                   a.urgent
                     ? 'border-amber bg-amber-wash'
                     : 'border-paper-edge bg-paper-deep hover:border-green'
                 }`}
               >
-                <span className={`mono block text-[2rem] font-semibold leading-none ${a.urgent ? 'text-amber' : 'text-ink'}`}>
+                <span className={`mono block text-[1.5rem] sm:text-[2rem] font-semibold leading-none ${a.urgent ? 'text-amber' : 'text-ink'}`}>
                   {a.value}
                 </span>
-                <span className="mt-2 block text-[0.8rem] font-medium text-ink">{a.label}</span>
+                <span className="mt-2 block text-[0.75rem] sm:text-[0.8rem] font-medium text-ink leading-tight">{a.label}</span>
               </Link>
             ))}
           </div>
