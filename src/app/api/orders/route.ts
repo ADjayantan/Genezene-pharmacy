@@ -14,6 +14,7 @@ const schema = z.object({
   pincode: z.string().trim().regex(/^[1-9][0-9]{5}$/, 'Enter a valid 6-digit PIN code'),
   notes: z.string().trim().max(500).optional(),
   items: z.array(z.object({ id: z.string(), qty: z.number().int().min(1).max(50) })).min(1).max(50),
+  prescriptionId: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -27,18 +28,21 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json({ message: parsed.error.issues[0]?.message ?? 'Invalid order' }, { status: 400 });
   }
-  const { items, ...ship } = parsed.data;
+  const { items, prescriptionId, ...ship } = parsed.data;
 
   try {
     const order = await db.$transaction(async (tx) => {
-      // Prices come from the DATABASE, never from the request body. A client
-      // that posts {price: 1} must not be able to buy a ₹500 medicine for ₹1.
       const products = await tx.product.findMany({
         where: { id: { in: items.map((i) => i.id) }, published: true },
       });
 
       if (products.length !== items.length) {
         throw new Error('Some items are no longer available. Please review your cart.');
+      }
+
+      const needsRx = products.some((p) => p.rxRequired);
+      if (needsRx && !prescriptionId) {
+        throw new Error('A prescription is required for one or more medicines in your order.');
       }
 
       let total = 0;
@@ -85,7 +89,7 @@ export async function POST(req: Request) {
           costTotal,
           ...ship,
           items: { create: lines },
-          // Seed the tracking timeline with the order being placed.
+          prescriptions: prescriptionId ? { connect: { id: prescriptionId } } : undefined,
           events: { create: { status: 'PENDING', note: 'Order placed', actor: null } },
         },
       });

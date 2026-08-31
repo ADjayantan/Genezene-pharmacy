@@ -11,53 +11,25 @@
    silently do nothing.
    ───────────────────────────────────────────────────────────── */
 :root {
-  --paper:       #FAF7F2;   /* page — warm off-white, never #FFF */
-  --paper-deep:  #F2ECE3;   /* cards, tinted bands */
-  --paper-edge:  #E6DDD0;   /* hairline rules */
-  --ink:         #1A2E28;   /* text — deep green-black, never #000 */
-  --ink-soft:    #5C6B65;
-  --green:       #1F4A3D;   /* primary action */
-  --green-deep:  #163329;
-  --green-wash:  #E8F0EC;
-  --green-on:    #FAF7F2;   /* text on a green fill */
-  --amber:       #C2703D;   /* the single warm accent */
-  --amber-wash:  #FAEDE3;
-  --plum:        #7B3F5E;   /* PRESCRIPTION ONLY — never decorative */
-  --plum-wash:   #F5E9EF;
+  --paper:       #F5F0E6;   /* page — warm beige */
+  --paper-deep:  #E8E1D3;   /* cards, tinted bands */
+  --paper-edge:  #D5CEBF;   /* hairline rules */
+  --ink:         #1A2421;   /* text — deep slate green-black */
+  --ink-soft:    #5A6862;
+  --green:       #163329;   /* primary action — Deep Pine Green */
+  --green-deep:  #163329;   /* Top Banner — Deep Pine Green */
+  --green-wash:  #D9E2DE;
+  --green-on:    #F5F0E6;   /* text on a green fill */
+  --amber:       #C87941;   /* Highlights — Warm Amber */
+  --amber-wash:  #F7EBE1;
+  --plum:        #8A3E3E;   /* Prescription Alerts — Deep Crimson */
+  --plum-wash:   #EBD9D9;
   --in:          #2D6A4F;
   --low:         #B4690E;
   --out:         #A33A32;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper:      #14201C;
-    --paper-deep: #1C2B26;
-    --paper-edge: #2A3B35;
-    --ink:        #EDE7DD;
-    --ink-soft:   #9DAAA4;
-    --green:      #6BAF95;
-    --green-deep: #8FC7B0;
-    --green-wash: #1B322B;
-    --green-on:   #0E1C17;
-    --amber:      #E0965E;
-    --amber-wash: #2E2018;
-    --plum:       #C88BA6;
-    --plum-wash:  #2B1C24;
-    --in:         #6BAF95;
-    --low:        #D9A05B;
-    --out:        #D98A82;
-  }
-}
 
-:root[data-theme="dark"] {
-  --paper:#14201C; --paper-deep:#1C2B26; --paper-edge:#2A3B35;
-  --ink:#EDE7DD; --ink-soft:#9DAAA4;
-  --green:#6BAF95; --green-deep:#8FC7B0; --green-wash:#1B322B; --green-on:#0E1C17;
-  --amber:#E0965E; --amber-wash:#2E2018;
-  --plum:#C88BA6; --plum-wash:#2B1C24;
-  --in:#6BAF95; --low:#D9A05B; --out:#D98A82;
-}
 
 @theme inline {
   --color-paper:      var(--paper);
@@ -88,7 +60,10 @@
   --radius-card: 4px;
 }
 
-html { scroll-behavior: smooth; }
+html { 
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
 body {
   background: var(--paper);
@@ -101,6 +76,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 /* Fraunces is variable — dial the softness down and let optical
@@ -144,6 +120,8 @@ body {
 @media (pointer: coarse) {
   :where(button, a, select, summary, input[type="checkbox"]) { min-height: 44px; }
   :where(.mono, small) { font-size: max(0.78rem, 13px); }
+  /* Eliminate the 300ms tap delay on mobile devices, making buttons feel instantly responsive */
+  :where(button, a, input, select, textarea) { touch-action: manipulation; }
 }
 
 /* Native disclosure, styled with a serif +/− instead of the

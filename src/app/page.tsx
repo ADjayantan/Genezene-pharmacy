@@ -5,6 +5,7 @@ import { buildMetadata, JsonLd, faqSchema } from '@/lib/seo';
 import { LeadForm } from '@/components/LeadForm';
 import { ProductCard } from '@/components/ProductCard';
 import { ButtonLink, Panel, RuleLabel } from '@/components/ui';
+import { PromoCarousel } from '@/components/PromoCarousel';
 import Link from 'next/link';
 
 export const revalidate = 300;
@@ -19,7 +20,7 @@ export const metadata: Metadata = buildMetadata({
 const FAQS = [
   {
     q: 'Do you deliver medicines in Coimbatore?',
-    a: 'Yes. Genezenz Pharmacy delivers across Coimbatore including Ganapathy, Saibaba Colony, RS Puram, Peelamedu, Gandhipuram and Saravanampatti. Orders placed before 2 PM are dispatched the same day.',
+    a: 'Yes. We offer doorstep delivery (within a 10km radius of Ganapathy). Orders placed before 2 PM are dispatched the same day.',
   },
   {
     q: 'How do I order prescription medicines?',
@@ -119,39 +120,45 @@ export default async function Home() {
           measurably lifts click-through rate. */}
       <JsonLd data={faqSchema(FAQS)} />
 
-      {/* HERO — server-rendered. The h1 and copy are in the first HTML
-          response, so Googlebot indexes them without running JavaScript.
-          No gradient: warm paper carries it. */}
+      {/* PROMO BANNERS CAROUSEL */}
+      <PromoCarousel />
+
+      {/* HERO */}
       <section className="border-b border-paper-edge">
-        <div className="container-x grid items-start gap-14 py-18 md:grid-cols-[3fr_2fr]">
-          <div>
-            <RuleLabel>CDSCO Licensed · Established {site.founded}</RuleLabel>
-            <h1 className="mt-3 text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.035em]">
+        <div className="container-x grid items-start gap-8 md:gap-14 py-8 md:py-18 md:grid-cols-[3fr_2fr]">
+          <div className="text-center md:text-left">
+            <RuleLabel className="mx-auto md:mx-0">CDSCO Licensed · Established {site.founded}</RuleLabel>
+            <h1 className="mt-3 text-[clamp(1.6rem,5vw,3.4rem)] leading-[1.15] tracking-[-0.035em]">
               Medicines, <em className="font-normal italic">dispensed</em>
-              <br />by people who know you.
+              <br className="hidden sm:block" /> by people who know you.
             </h1>
-            <p className="mt-5 max-w-[36ch] text-[1.1rem] leading-relaxed text-ink-soft">
-              Genuine medicines checked by licensed pharmacists, delivered across Coimbatore
-              from our counter in Ganapathy.
+            <div className="mt-4 md:mt-6 flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
+              <span className="rounded-[3px] bg-green px-2 py-1 md:px-3 text-[0.7rem] md:text-[0.8rem] font-bold text-green-on">Medicines 18% OFF</span>
+              <span className="rounded-[3px] bg-green px-2 py-1 md:px-3 text-[0.7rem] md:text-[0.8rem] font-bold text-green-on">Surgicals 25% OFF</span>
+            </div>
+            
+            <p className="mt-4 mx-auto md:mx-0 max-w-[40ch] text-[0.9rem] md:text-[1.1rem] leading-relaxed text-ink-soft">
+              Doorstep delivery within 10km of Ganapathy. 
+              Can't find your medicine? Upload your prescription 🗒️
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/products">Browse the counter</ButtonLink>
-              <ButtonLink href="/upload-prescription" tone="outline">Upload a prescription</ButtonLink>
+            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row flex-wrap justify-center md:justify-start gap-3">
+              <ButtonLink href="/products" className="w-full sm:w-auto text-center justify-center">Browse the counter</ButtonLink>
+              <ButtonLink href="/upload-prescription" tone="outline" className="w-full sm:w-auto text-center justify-center">Upload a prescription</ButtonLink>
             </div>
 
-            <div className="mono mt-9 flex flex-wrap gap-x-5 gap-y-1 border-t border-paper-edge pt-4 text-[0.68rem] uppercase tracking-[0.08em] text-ink-soft">
+            <div className="mono mt-6 md:mt-9 flex flex-wrap justify-center md:justify-start gap-x-3 md:gap-x-5 gap-y-1 border-t border-paper-edge pt-4 text-[0.6rem] md:text-[0.68rem] uppercase tracking-[0.08em] text-ink-soft">
               <span>Pharmacist verified</span>
-              <span className="border-l border-paper-edge pl-5">Same-day dispatch</span>
-              <span className="border-l border-paper-edge pl-5">Free above ₹{site.offers.freeDeliveryAbove}</span>
+              <span className="text-ink-soft/40">•</span>
+              <span>Same-day dispatch</span>
             </div>
           </div>
 
-          {/* Lead capture above the fold — this is the conversion engine. */}
-          <Panel accent="amber">
+          {/* Lead capture */}
+          <Panel accent="amber" className="mx-auto w-full max-w-md md:max-w-none">
             <RuleLabel className="border-t-0 pt-0">Call me back</RuleLabel>
-            <h2 className="font-display mt-1.5 text-[1.3rem]">Tell us what you need.</h2>
-            <p className="mb-5 mt-1 text-[0.87rem] text-ink-soft">
+            <h2 className="font-display mt-1.5 text-[1.2rem] md:text-[1.3rem]">Tell us what you need.</h2>
+            <p className="mb-4 md:mb-5 mt-1 text-[0.85rem] text-ink-soft">
               Our pharmacist calls you back and confirms availability.
             </p>
             <LeadForm />

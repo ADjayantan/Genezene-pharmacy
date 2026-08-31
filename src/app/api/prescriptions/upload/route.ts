@@ -33,6 +33,36 @@ export async function POST(req: Request) {
     );
   }
 
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      const aiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: "Look at this image. Is it a medical prescription, a doctor's note, or a medical report? Answer with just the word YES or NO." },
+                { inlineData: { mimeType: mime, data: buf.toString('base64') } }
+              ]
+            }]
+          })
+        }
+      );
+      const aiData = await aiRes.json();
+      const answer = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim()?.toUpperCase() || '';
+      if (answer.startsWith('NO')) {
+        return NextResponse.json({ 
+          message: 'This does not look like a valid medical prescription. Please upload a clear picture of your doctor\'s prescription.' 
+        }, { status: 400 });
+      }
+    } catch (e) {
+      console.error('Gemini validation failed', e);
+      // Fallback: if AI fails, we allow the upload so users aren't blocked by an AI outage.
+    }
+  }
+
   const key = newKey(mime);
   await putFile(key, buf, mime);
 

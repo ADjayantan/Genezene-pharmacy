@@ -36,10 +36,7 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
-  keywords: [
-    'online pharmacy Coimbatore', 'medical shop Ganapathy', 'medicine delivery Coimbatore',
-    'buy medicines online Coimbatore', 'prescription upload pharmacy', 'Genezenz Pharmacy',
-  ],
+  keywords: site.keywords,
   authors: [{ name: site.name }],
   creator: site.name,
   publisher: site.name,
