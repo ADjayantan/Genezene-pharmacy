@@ -173,11 +173,15 @@ details[open] > summary::before { content: '–'; }
     --ink:        #E4E8EC;
     --ink-soft:   #8D99A5;
     --green-wash: #172A24;
+    --amber:      #E0965E;
+    --amber-wash: #2A1D16;
+    --out:        #E57373;
   }
 }
 :root[data-theme="dark"] .admin-scope {
   --paper:#12161A; --paper-deep:#1A1F25; --paper-edge:#2B3239;
   --ink:#E4E8EC; --ink-soft:#8D99A5; --green-wash:#172A24;
+  --amber:#E0965E; --amber-wash:#2A1D16; --out:#E57373;
 }
 
 /* Tools do not need an editorial serif. Headings drop to the sans at a
